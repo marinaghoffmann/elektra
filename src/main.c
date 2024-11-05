@@ -5,6 +5,7 @@
 #include "screen.h"     // Biblioteca para manipulação da tela, como posição do cursor e cores
 #include "keyboard.h"   // Biblioteca para leitura de teclas não-bloqueante
 #include "timer.h"      // Biblioteca para controle de temporização
+#include <unistd.h>  // Para a função usleep
 
 // Função que exibe a tela inicial do jogo
 void telainicial() {
@@ -14,6 +15,22 @@ void telainicial() {
     screenGotoxy(MINX + 5, MINY + 2);
     screenSetColor(LIGHTCYAN, BLACK);
     printf("███████╗██╗░░░░░███████╗██╗░░██╗████████╗██████╗░░█████╗░\n");
+
+    screenGotoxy(MINX + 5, MINY + 3);
+    screenSetColor(LIGHTCYAN, BLACK);
+    printf("██╔════╝██║░░░░░██╔════╝██║░██╔╝╚══██╔══╝██╔══██╗██╔══██╗\n");
+    screenGotoxy(MINX + 5, MINY + 4);
+    screenSetColor(LIGHTCYAN, BLACK);
+    printf("█████╗░░██║░░░░░█████╗░░█████═╝░░░░██║░░░██████╔╝███████║\n");
+    screenGotoxy(MINX + 5, MINY + 5);
+    screenSetColor(LIGHTCYAN, BLACK);
+    printf("██╔══╝░░██║░░░░░██╔══╝░░██╔═██╗░░░░██║░░░██╔══██╗██╔══██║\n");
+    screenGotoxy(MINX + 5, MINY + 6);
+    screenSetColor(LIGHTCYAN, BLACK);
+    printf("███████╗███████╗███████╗██║░╚██╗░░░██║░░░██║░░██║██║░░██║\n");
+    screenGotoxy(MINX + 5, MINY + 7);
+    screenSetColor(LIGHTCYAN, BLACK);
+    printf("╚══════╝╚══════╝╚══════╝╚═╝░░╚═╝░░░╚═╝░░░╚═╝░░╚═╝╚═╝░░╚═╝\n");
 
     // Exibe mensagens com instruções para o jogador
     screenGotoxy(MINX + 5, MINY + 10);
@@ -206,7 +223,7 @@ int main() {
         // Controle da velocidade do jogo
         usleep(50000);  // Ajuste o valor conforme necessário
 
-        screenRefresh();  // Atualiza a tela com as mudanças
+        //screenRefresh();  // Atualiza a tela com as mudanças
     }
 
     // Tela de fim de jogo
