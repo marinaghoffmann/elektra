@@ -174,67 +174,87 @@ void colisao() {
     }
 }
 
-// Função principal que inicializa o jogo e executa o loop principal
+void telaGameOver() {
+    screenClear();
+    printf("Game Over! Pontuação final: %d\n", score);
+
+    // Pergunta ao jogador se deseja jogar novamente
+    screenGotoxy(0, 2);
+    printf("Deseja jogar novamente? (s para sim / n para não): ");
+    fflush(stdout);
+
+    while (1) {
+        if (keyhit()) {  // Verifica se uma tecla foi pressionada
+            char ch = readch();
+            if (ch == 's' || ch == 'S') {
+                inicio();       // Reinicia o jogo
+                return;
+            } else if (ch == 'n' || ch == 'N') {
+                telainicial();  // Retorna para a tela inicial
+                return;
+            }
+        }
+    }
+}
+
 int main() {
     keyboardInit();     // Inicializa o teclado
     telainicial();      // Exibe a tela inicial
-    inicio();           // Inicializa nave, tiros e asteroides
 
-    while (!game_over) {
-        screenClear();  // Limpa a tela
+    while (1) {
+        inicio();           // Inicializa nave, tiros e asteroides
 
-        // Leitura de teclas para controle da nave
-        if (keyhit()) {
-            char ch = readch();
-            if (ch == 'q' || ch == 'Q') break;   // Sai do jogo
-            if (ch == ' ') atirar();             // Atira
-            if (ch == 'a') movimento('L');       // Move para esquerda
-            if (ch == 'd') movimento('R');       // Move para direita
-        }
+        while (!game_over) {
+            screenClear();  // Limpa a tela
 
-        imgnave();         // Exibe a nave
-        movertiros();      // Atualiza posição dos tiros
-        moverasteroides();   // Atualiza posição dos asteroides
-        colisao();         // Verifica colisões
-
-        // Desenha os tiros ativos
-        for (int i = 0; i < MAX_BALAS; i++) {
-            if (balas[i].ativo) {
-                screenGotoxy(balas[i].x, balas[i].y);
-                printf("|");
+            // Leitura de teclas para controle da nave
+            if (keyhit()) {
+                char ch = readch();
+                if (ch == 'q' || ch == 'Q') break;   // Sai do jogo
+                if (ch == ' ') atirar();             // Atira
+                if (ch == 'a') movimento('L');       // Move para esquerda
+                if (ch == 'd') movimento('R');       // Move para direita
             }
-        }
 
-        // Desenha os asteroides ativos
-        for (int i = 0; i < MAX_ASTEROIDES; i++) {
-            if (asteroides[i].ativo) {
-                screenGotoxy(asteroides[i].x, asteroides[i].y);
-                printf("O");
+            imgnave();         // Exibe a nave
+            movertiros();      // Atualiza posição dos tiros
+            moverasteroides(); // Atualiza posição dos asteroides
+            colisao();         // Verifica colisões
+
+            // Desenha os tiros ativos
+            for (int i = 0; i < MAX_BALAS; i++) {
+                if (balas[i].ativo) {
+                    screenGotoxy(balas[i].x, balas[i].y);
+                    printf("|");
+                }
             }
+
+            // Desenha os asteroides ativos
+            for (int i = 0; i < MAX_ASTEROIDES; i++) {
+                if (asteroides[i].ativo) {
+                    screenGotoxy(asteroides[i].x, asteroides[i].y);
+                    printf("O");
+                }
+            }
+
+            // Exibe a pontuação do jogador
+            screenGotoxy(0, 0);
+            printf("Score: %d", score);
+
+            // Gera novos asteroides conforme o jogo avança
+            gerarasteroides();
+
+            // Controle da velocidade do jogo
+            usleep(50000);  // Ajuste o valor conforme necessário
         }
 
-        // Exibe a pontuação do jogador
-        screenGotoxy(0, 0);
-        printf("Score: %d", score);
-
-           // Gera novos asteroides conforme o jogo avança
-        gerarasteroides();
-
-        // Controle da velocidade do jogo
-        usleep(50000);  // Ajuste o valor conforme necessário
-
-        //screenRefresh();  // Atualiza a tela com as mudanças
+        // Chama a função de Game Over que permite ao jogador decidir jogar novamente
+        telaGameOver();
     }
 
-    // Tela de fim de jogo
-    screenClear();
-    printf("Game Over! Pontuação final: %d\n", score);
-    
     keyboardDestroy();  // Restaura as configurações do teclado
     return 0;
 }
-
-
 
 
        
