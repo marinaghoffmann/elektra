@@ -40,6 +40,10 @@ void telainicial()
 
     screenGotoxy(MINX + 25, MINY + 19);
     screenSetColor(BLUE, BLACK);
+    printf("Use as setas da direita e esquerda para mover a nave, e o espaço para atirar.");
+
+    screenGotoxy(MINX + 25, MINY + 20);
+    screenSetColor(BLUE, BLACK);
     printf("Pressione 'C' para começar ou 'S' para sair.");
 
     fflush(stdout); // Garante que a saída seja exibida imediatamente
