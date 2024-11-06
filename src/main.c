@@ -7,6 +7,10 @@
 #include "timer.h"    // Biblioteca para controle de temporização
 #include <unistd.h>   // Para a função usleep
 
+// Variáveis de controle de dificuldade
+int velocidade_asteroides = 300000; // Velocidade inicial dos asteroides
+int asteroides_ativos = 1;          // Número inicial de asteroides ativos
+
 // Função que exibe a tela inicial do jogo
 void telainicial()
 {
@@ -121,9 +125,9 @@ void imgnave()
 void movimento(char direcao)
 {
     if (direcao == 'L' && nave.x > 0)
-        nave.x--; // Move para a esquerda
+        nave.x -= 2; // Move duas posições para a esquerda
     if (direcao == 'R' && nave.x < WIDTH - 5)
-        nave.x++; // Move para a direita
+        nave.x += 2; // Move duas posições para a direita
 }
 
 // Função para atirar uma bala
@@ -158,14 +162,25 @@ void movertiros()
 // Função para gerar novos asteroides
 void gerarasteroides()
 {
+    int asteroides_count = 0;
     for (int i = 0; i < MAX_ASTEROIDES; i++)
     {
-        if (!asteroides[i].ativo)
-        {                                     // Procura um asteroide inativo
-            asteroides[i].x = rand() % WIDTH; // Define posição aleatória no eixo x
-            asteroides[i].y = 0;              // Começa no topo da tela
-            asteroides[i].ativo = 1;          // Ativa o asteroide
-            break;
+        if (asteroides[i].ativo)
+            asteroides_count++;
+    }
+
+    // Gera um novo asteroide apenas se o número ativo for menor do que o limite permitido
+    if (asteroides_count < asteroides_ativos)
+    {
+        for (int i = 0; i < MAX_ASTEROIDES; i++)
+        {
+            if (!asteroides[i].ativo)
+            {                                     // Procura um asteroide inativo
+                asteroides[i].x = rand() % WIDTH; // Define posição aleatória no eixo x
+                asteroides[i].y = 0;              // Começa no topo da tela
+                asteroides[i].ativo = 1;          // Ativa o asteroide
+                break;
+            }
         }
     }
 }
@@ -200,6 +215,16 @@ void colisao()
                     balas[i].ativo = 0;      // Desativa a bala
                     asteroides[j].ativo = 0; // Desativa o asteroide
                     score += 10;             // Incrementa a pontuação
+
+                    // Aumenta a dificuldade a cada 50 pontos de score
+                    if (score % 50 == 0)
+                    {
+                        if (asteroides_ativos < MAX_ASTEROIDES)
+                            asteroides_ativos++; // Aumenta o número de asteroides ativos
+
+                        if (velocidade_asteroides > 100000)
+                            velocidade_asteroides -= 20000; // Aumenta a velocidade gradualmente
+                    }
                 }
             }
         }
@@ -314,7 +339,7 @@ int main()
             gerarasteroides();
 
             // Controle da velocidade do jogo
-            usleep(50000); // Ajuste o valor conforme necessário
+            usleep(velocidade_asteroides / 2); // Diminui a pausa, acelerando o jogo
         }
 
         // Chama a função de Game Over que permite ao jogador decidir jogar novamente
