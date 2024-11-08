@@ -1,80 +1,78 @@
 /**
  * screen.c
- * Created on Aug, 23th 2023
- * Author: Tiago Barros
- * Based on "From C to C++ course - 2002"
+ * Simplified version to draw visible borders around the screen.
  */
 
 #include "screen.h"
 
+// Define caracteres para as bordas
+#define HLINE '='   // Linha horizontal
+#define VLINE '|'   // Linha vertical
+#define CORNER '+'  // Cantos
+
 void screenDrawBorders() 
 {
-    char hbc = '=';  // Novo caractere para linha horizontal
-    char vbc = '|';  // Novo caractere para linha vertical
-    
+    // Limpa a tela
     screenClear();
-    screenBoxEnable();  // Ativa modo de desenho de caixa, se implementado
 
-    // Canto superior esquerdo
+    // Desenha o canto superior esquerdo
     screenGotoxy(MINX, MINY);
-    printf("+");
+    printf("%c", CORNER);
 
     // Linha superior
     for (int i = MINX + 1; i < MAXX; i++) {
         screenGotoxy(i, MINY);
-        printf("%c", hbc);
+        printf("%c", HLINE);
     }
 
-    // Canto superior direito
+    // Desenha o canto superior direito
     screenGotoxy(MAXX, MINY);
-    printf("+");
+    printf("%c", CORNER);
 
-    // Laterais
+    // Desenha as laterais
     for (int i = MINY + 1; i < MAXY; i++) {
         screenGotoxy(MINX, i);
-        printf("%c", vbc);   // Borda esquerda
+        printf("%c", VLINE);   // Borda esquerda
         screenGotoxy(MAXX, i);
-        printf("%c", vbc);   // Borda direita
+        printf("%c", VLINE);   // Borda direita
     }
 
-    // Canto inferior esquerdo
+    // Desenha o canto inferior esquerdo
     screenGotoxy(MINX, MAXY);
-    printf("+");
+    printf("%c", CORNER);
 
     // Linha inferior
     for (int i = MINX + 1; i < MAXX; i++) {
         screenGotoxy(i, MAXY);
-        printf("%c", hbc);
+        printf("%c", HLINE);
     }
 
-    // Canto inferior direito
+    // Desenha o canto inferior direito
     screenGotoxy(MAXX, MAXY);
-    printf("+");
-
-    screenBoxDisable();  // Desativa modo de desenho de caixa, se implementado
+    printf("%c", CORNER);
 }
 
 void screenInit(int drawBorders)
 {
     screenClear();
-    if (drawBorders) screenDrawBorders();
-    screenHomeCursor();
-    screenHideCursor();
+    if (drawBorders) screenDrawBorders();  // Chama a função para desenhar as bordas, se ativado
+    screenHomeCursor();  // Posiciona o cursor no início da tela
+    screenHideCursor();  // Oculta o cursor para não interferir na visualização
 }
 
 void screenDestroy()
 {
-    printf("%s[0;39;49m", ESC); // Reset colors
-    screenSetNormal();
-    screenClear();
-    screenHomeCursor();
-    screenShowCursor();
+    screenClear();        // Limpa a tela ao sair
+    screenHomeCursor();   // Reposiciona o cursor no início
+    screenShowCursor();   // Exibe o cursor novamente
 }
 
 void screenGotoxy(int x, int y)
 {
-    x = ( x<0 ? 0 : x>=MAXX ? MAXX-1 : x);
-    y = ( y<0 ? 0 : y>MAXY ? MAXY : y);
-    
+    // Ajusta os valores de x e y para garantir que estão dentro dos limites da tela
+    x = ( x < 0 ? 0 : x >= MAXX ? MAXX - 1 : x);
+    y = ( y < 0 ? 0 : y > MAXY ? MAXY : y);
+
+    // Move o cursor para a posição especificada
     printf("%s[f%s[%dB%s[%dC", ESC, ESC, y, ESC, x);
 }
