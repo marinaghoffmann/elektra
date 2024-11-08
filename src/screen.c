@@ -3,31 +3,34 @@
  * Created on Aug, 23th 2023
  * Author: Tiago Barros
  * Based on "From C to C++ course - 2002"
-*/
+ */
 
 #include "screen.h"
 
 void screenDrawBorders() 
 {
-    char hbc = BOX_HLINE;
-    char vbc = BOX_VLINE;
+    char hbc = '=';  // Novo caractere para linha horizontal
+    char vbc = '|';  // Novo caractere para linha vertical
     
+    // Configuração de cor opcional para a borda, se suportado pelo terminal
+    screenSetColor(LIGHTBLUE, BLACK);
+
     screenClear();
     screenBoxEnable();
     
     screenGotoxy(MINX, MINY);
-    printf("%c", BOX_UPLEFT);
+    printf("#");  // Canto superior esquerdo
 
-    for (int i=MINX+1; i<MAXX; i++)
-    {
+    // Linha superior
+    for (int i = MINX + 1; i < MAXX; i++) {
         screenGotoxy(i, MINY);
         printf("%c", hbc);
     }
     screenGotoxy(MAXX, MINY);
-    printf("%c", BOX_UPRIGHT);
+    printf("#");  // Canto superior direito
 
-    for (int i=MINY+1; i<MAXY; i++)
-    {
+    // Linhas laterais
+    for (int i = MINY + 1; i < MAXY; i++) {
         screenGotoxy(MINX, i);
         printf("%c", vbc);
         screenGotoxy(MAXX, i);
@@ -35,17 +38,20 @@ void screenDrawBorders()
     }
 
     screenGotoxy(MINX, MAXY);
-    printf("%c", BOX_DWNLEFT);
-    for (int i=MINX+1; i<MAXX; i++)
-    {
+    printf("#");  // Canto inferior esquerdo
+
+    // Linha inferior
+    for (int i = MINX + 1; i < MAXX; i++) {
         screenGotoxy(i, MAXY);
         printf("%c", hbc);
     }
     screenGotoxy(MAXX, MAXY);
-    printf("%c", BOX_DWNRIGHT);
+    printf("#");  // Canto inferior direito
 
     screenBoxDisable();
-    
+
+    // Restaura a cor normal da tela após desenhar a borda
+    screenSetNormal();
 }
 
 void screenInit(int drawBorders)
@@ -73,14 +79,14 @@ void screenGotoxy(int x, int y)
     printf("%s[f%s[%dB%s[%dC", ESC, ESC, y, ESC, x);
 }
 
-void screenSetColor( screenColor fg, screenColor bg)
+void screenSetColor(screenColor fg, screenColor bg)
 {
     char atr[] = "[0;";
 
     if ( fg > LIGHTGRAY )
     {
         atr[1] = '1';
-		fg -= 8;
+        fg -= 8;
     }
 
     printf("%s%s%d;%dm", ESC, atr, fg+30, bg+40);
