@@ -12,46 +12,46 @@ void screenDrawBorders()
     char hbc = '=';  // Novo caractere para linha horizontal
     char vbc = '|';  // Novo caractere para linha vertical
     
-    // Configuração de cor opcional para a borda, se suportado pelo terminal
-    screenSetColor(LIGHTBLUE, BLACK);
-
     screenClear();
-    screenBoxEnable();
-    
+    screenBoxEnable();  // Ativa modo de desenho de caixa, se implementado
+
+    // Canto superior esquerdo
     screenGotoxy(MINX, MINY);
-    printf("#");  // Canto superior esquerdo
+    printf("+");
 
     // Linha superior
     for (int i = MINX + 1; i < MAXX; i++) {
         screenGotoxy(i, MINY);
         printf("%c", hbc);
     }
-    screenGotoxy(MAXX, MINY);
-    printf("#");  // Canto superior direito
 
-    // Linhas laterais
+    // Canto superior direito
+    screenGotoxy(MAXX, MINY);
+    printf("+");
+
+    // Laterais
     for (int i = MINY + 1; i < MAXY; i++) {
         screenGotoxy(MINX, i);
-        printf("%c", vbc);
+        printf("%c", vbc);   // Borda esquerda
         screenGotoxy(MAXX, i);
-        printf("%c", vbc);
+        printf("%c", vbc);   // Borda direita
     }
 
+    // Canto inferior esquerdo
     screenGotoxy(MINX, MAXY);
-    printf("#");  // Canto inferior esquerdo
+    printf("+");
 
     // Linha inferior
     for (int i = MINX + 1; i < MAXX; i++) {
         screenGotoxy(i, MAXY);
         printf("%c", hbc);
     }
+
+    // Canto inferior direito
     screenGotoxy(MAXX, MAXY);
-    printf("#");  // Canto inferior direito
+    printf("+");
 
-    screenBoxDisable();
-
-    // Restaura a cor normal da tela após desenhar a borda
-    screenSetNormal();
+    screenBoxDisable();  // Desativa modo de desenho de caixa, se implementado
 }
 
 void screenInit(int drawBorders)
@@ -77,17 +77,4 @@ void screenGotoxy(int x, int y)
     y = ( y<0 ? 0 : y>MAXY ? MAXY : y);
     
     printf("%s[f%s[%dB%s[%dC", ESC, ESC, y, ESC, x);
-}
-
-void screenSetColor(screenColor fg, screenColor bg)
-{
-    char atr[] = "[0;";
-
-    if ( fg > LIGHTGRAY )
-    {
-        atr[1] = '1';
-        fg -= 8;
-    }
-
-    printf("%s%s%d;%dm", ESC, atr, fg+30, bg+40);
 }
