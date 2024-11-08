@@ -46,7 +46,7 @@ void apagaNave(int x, int y) {
 }
 
 void moverNave() {
-    int x = 40, y = 5; // posição inicial da nave
+    int x = (MAXX - 5) / 2, y = MAXY - 3; // posição inicial da nave (MODIFICADO) agora a principio a nave iniciará no centro inferior da tela
     int tecla;
 
     screenClear();
