@@ -7,6 +7,9 @@
 
 #include "screen.h"
 
+#define WIDTH 120        // Nova largura
+#define HEIGHT 35        // Nova altura
+
 void screenDrawBorders() 
 {
     char hbc = BOX_HLINE;
