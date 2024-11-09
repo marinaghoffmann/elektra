@@ -2,8 +2,8 @@
 #include "screen.h"
 #include "keyboard.h"
 
-#define WIDTH 80
-#define HEIGHT 24 //talvez tenha que mudar dps por causa dos asteroides, mt baixa?
+#define WIDTH 130
+#define HEIGHT 40 //talvez tenha que mudar dps por causa dos asteroides, mt baixa?
 
 //Nave nave;
 
@@ -46,7 +46,7 @@ void desenharNave(int x, int y) {
 
 void apagaNave(int x, int y) {
     // apaga a nave desenhando espaços nas posições da nave para que der a ideia de movimento
-    for (int i = 0; i < 3; i++) { // 5 já que a nave ocupa 5 linhas, para que todas se movam
+    for (int i = 0; i < 3; i++) { // 3 já que a nave ocupa 3 linhas, para que todas se movam
         screenGotoxy(x, y + i); //move o cursor para essas posições
         printf("        "); 
     }
@@ -61,7 +61,7 @@ void moverNave() {
     desenharNave(x, y);
     screenUpdate();
 
-    while (1) {
+    while (1) {  //ENTENDER UM POUCO MELHOR COMO FUNCIONA ESSA TECLA 27 E A 91
         tecla = capturaTecla(); // lê a tecla clicada no teclado e armazena em tecla 
 
         apagaNave(x, y); // apaga a nave da posição atual

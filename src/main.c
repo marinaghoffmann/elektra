@@ -126,16 +126,18 @@ void telainicial()
     //}
 //}
 
-int main(){
-    screenInit(1);      // inicializa a tela, AMANDA(ainda vou desenhar as bordas da tela, n tô conseguindo deixar a nave embaixo)
+#define WIDTH 130
+#define HEIGHT 40 
 
+int main(){
+    screenInit(1);      // inicializa a tela
     telainicial();
 
-    desenharNave(40, 5);  // desenha a nave na posição (40, 5)
+    desenharNave((WIDTH - 5), HEIGHT - 4);  // desenha a nave na posição 
     moverNave();          
     
     // apaga a nave da tela depois do movimento
-    apagaNave(40, 5);     // dpaga a nave da posição original 
+    apagaNave((WIDTH - 5), HEIGHT - 4);     // dpaga a nave da posição original 
 
     screenDestroy(); 
 
