@@ -2,26 +2,33 @@
 #include "screen.h"
 #include "keyboard.h"
 
-//#define WIDTH 80
-//#define HEIGHT 24
+#define WIDTH 80
+#define HEIGHT 24 //talvez tenha que mudar dps por causa dos asteroides, mt baixa?
 
 //Nave nave;
 
-//void iniciarNave() {
-    //nave.x = WIDTH / 2;
-//}
+void desenharBorda() {
 
-//void desenharNave() {
-    //screenGotoxy(nave.x, HEIGHT - 2);
-    //printf("<=^=>");
-//}
+    screenSetColor(WHITE, DARKGRAY);
 
-//void moverNave(char direcao) {
-    //if (direcao == 'L' && nave.x > 0)
-        //nave.x -= 2;
-    //if (direcao == 'R' && nave.x < WIDTH - 5)
-        //nave.x += 2;
-//}
+    // desenhar bordas horizontais
+    for (int x = 1; x <= WIDTH; x++) { // witdh = largura
+        screenGotoxy(x, 1);          // parte de cima
+        printf("=");
+        screenGotoxy(x, HEIGHT);     // parte de baixo
+        printf("=");
+    }
+
+    // desenhar bordas verticais
+    for (int y = 1; y <= HEIGHT; y++) {
+        screenGotoxy(1, y);          // parte da esquerda
+        printf("||");
+        screenGotoxy(WIDTH, y);      // parte da direita
+        printf("||");
+    }
+
+    screenSetNormal();       
+}
 
 void desenharNave(int x, int y) {
     // Define as cores da nave
@@ -46,10 +53,11 @@ void apagaNave(int x, int y) {
 }
 
 void moverNave() {
-    int x = (MAXX - 5) / 2, y = MAXY - 3; // posição inicial da nave (MODIFICADO) agora a principio a nave iniciará no centro inferior da tela
+    int x = (WIDTH - 5) / 2, y = HEIGHT - 4; // posição inicial da nave (MODIFICADO) agora a principio a nave iniciará no centro inferior da tela
     int tecla;
 
     screenClear();
+    desenharBorda();
     desenharNave(x, y);
     screenUpdate();
 

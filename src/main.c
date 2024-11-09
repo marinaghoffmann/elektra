@@ -79,8 +79,8 @@ void telainicial()
     //game_over = 0;
 //}
 
-//#define WIDTH 80
-//#define HEIGHT 24
+//#define WIDTH 81
+//#define HEIGHT 24 
 
 //void colisao() {
     //for (int i = 0; i < MAX_BALAS; i++) {
@@ -124,39 +124,6 @@ void telainicial()
             //}
         //}
     //}
-//}
-
-//int main() {
-    //keyboardInit();
-    //telainicial();
-
-    //while (1) {
-        //inicio();
-        //while (!game_over) {
-            //screenClear();
-            //if (keyhit()) {
-                //char ch = readch();
-                //if (ch == 'q' || ch == 'Q') break;
-                //if (ch == ' ') atirar();
-                //if (ch == '\033') {
-                    //if (keyhit() && readch() == '[') {
-                        //char direction = readch();
-                        //if (direction == 'D') moverNave('L');
-                        //if (direction == 'C') moverNave('R');
-                    //}
-                //}
-            //}
-            //desenharNave();
-            //moverTiros();
-            //gerarAsteroides();
-            //moverAsteroides();
-            //colisao();
-            //usleep(velocidade_asteroides);
-        //}
-        //telaGameOver();
-    //}
-    //keyboardClose();
-    //return 0;
 //}
 
 int main(){
