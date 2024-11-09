@@ -19,36 +19,36 @@ void telainicial()
 
     // Desenha o título do jogo na tela com a cor ciano claro
     screenGotoxy(MINX + 25, MINY + 10);
-    screenSetColor(LIGHTCYAN, DARKGRAY);
+    screenSetColor(WHITE, DARKGRAY);
     printf("███████╗██╗░░░░░███████╗██╗░░██╗████████╗██████╗░░█████╗░\n");
 
     screenGotoxy(MINX + 25, MINY + 11);
-    screenSetColor(LIGHTCYAN, DARKGRAY);
+    screenSetColor(WHITE, DARKGRAY);
     printf("██╔════╝██║░░░░░██╔════╝██║░██╔╝╚══██╔══╝██╔══██╗██╔══██╗\n");
     screenGotoxy(MINX + 25, MINY + 12);
-    screenSetColor(LIGHTCYAN, DARKGRAY);
+    screenSetColor(WHITE, DARKGRAY);
     printf("█████╗░░██║░░░░░█████╗░░█████═╝░░░░██║░░░██████╔╝███████║\n");
     screenGotoxy(MINX + 25, MINY + 13);
-    screenSetColor(LIGHTCYAN, DARKGRAY);
+    screenSetColor(WHITE, DARKGRAY);
     printf("██╔══╝░░██║░░░░░██╔══╝░░██╔═██╗░░░░██║░░░██╔══██╗██╔══██║\n");
     screenGotoxy(MINX + 25, MINY + 14);
-    screenSetColor(LIGHTCYAN, DARKGRAY);
+    screenSetColor(WHITE, DARKGRAY);
     printf("███████╗███████╗███████╗██║░╚██╗░░░██║░░░██║░░██║██║░░██║\n");
     screenGotoxy(MINX + 25, MINY + 15);
-    screenSetColor(LIGHTCYAN, DARKGRAY);
+    screenSetColor(WHITE, DARKGRAY);
     printf("╚══════╝╚══════╝╚══════╝╚═╝░░╚═╝░░░╚═╝░░░╚═╝░░╚═╝╚═╝░░╚═╝\n");
 
     // Exibe mensagens com instruções para o jogador
     screenGotoxy(MINX + 25, MINY + 18);
-    screenSetColor(BLUE, DARKGRAY);
+    screenSetColor(LIGHTBLUE, DARKGRAY);
     printf("Proteja o planeta da tempestade de asteroides!");
 
     screenGotoxy(MINX + 25, MINY + 19);
-    screenSetColor(BLUE, DARKGRAY);
+    screenSetColor(LIGHTBLUE, DARKGRAY);
     printf("Use as setas da direita e esquerda para mover a nave, e o espaço para atirar.");
 
     screenGotoxy(MINX + 25, MINY + 20);
-    screenSetColor(BLUE, DARKGRAY);
+    screenSetColor(LIGHTBLUE, DARKGRAY);
     printf("Pressione 'C' para começar ou 'S' para sair.\n");
 
     fflush(stdout); // Garante que a saída seja exibida imediatamente
