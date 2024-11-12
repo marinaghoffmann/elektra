@@ -33,41 +33,51 @@ void apagaNave(int x, int y) {
 void moverNave() {
     int x = (WIDTH - 5) / 2, y = HEIGHT - 4;  // posição inicial da nave
     int tecla;
+    int rodando = 1;  // flag para manter o loop do jogo ativo
 
-    screenClear();        // limpa a tela para começar o jogo
-    inicializarAsteroides(); // inicializa as posições iniciais dos asteroides
-    desenharNave(x, y);   // desenha a nave na posição inicial
-    screenUpdate();       // atualiza a tela para mostrar a nave e borda
+    screenClear();         // limpa a tela
+    inicializarAsteroides(); // inicializa os asteroides
+    desenharNave(x, y);    // desenha a nave na posição inicial
+    screenUpdate();        // atualiza a tela
 
-    while (1) {  // loop principal do jogo
-        tecla = capturaTecla(); // lê a tecla clicada no teclado e armazena em tecla
+    while (rodando) {  // loop principal do jogo
+        // **1. Verificar entrada do jogador**
+        if (keyhit()) { // Verifica se há uma tecla pressionada
+            tecla = capturaTecla();
 
-        apagaNave(x, y); // apaga a nave da posição atual
+            apagaNave(x, y); // apaga a nave da posição atual
 
-        // move a nave com base na tecla pressionada
-        if (tecla == 27) {  // a tecla "Escape" é o prefixo para as setas
-            tecla = getchar();  // lê o próximo caractere que é a tecla da seta
+            if (tecla == 27) { // a tecla "Escape" é o prefixo para as setas
+                tecla = getchar();  // lê o próximo caractere que é a tecla da seta
 
-            if (tecla == 91) { // verifica a sequência que indica que é uma seta
-                tecla = getchar();  // lê o próximo caractere da sequência
+                if (tecla == 91) { // verifica a sequência que indica que é uma seta
+                    tecla = getchar();  // lê o próximo caractere da sequência
 
-                if (tecla == 67 && x < MAXX - 5) x++; // seta para a direita e verifica limite da tela
-                else if (tecla == 68 && x > MINX) x--; // seta para a esquerda e verifica limite da tela
+                    if (tecla == 67 && x < MAXX - 5) x++; // seta para a direita e verifica limite da tela
+                    else if (tecla == 68 && x > MINX) x--; // seta para a esquerda e verifica limite da tela
+                }
+            }
+
+            if (tecla == 's') { // tecla para sair do jogo
+                rodando = 0;
+                continue;
             }
         }
 
-        if (tecla == 's') {     // se o jogador pressionar 's', sai para a tela inicial
-            telainicial();
-            break;
-        }
+        // **2. Atualizar asteroides**
+        atualizarAsteroides();
 
-        atualizarAsteroides();  // move os asteroides para baixo e redesenha em novas posições
-        desenharNave(x, y);     // redesenha a nave na nova posição
-        screenUpdate();         // atualiza a tela para exibir as posições da nave e asteroides
+        // **3. Redesenhar nave**
+        desenharNave(x, y);
 
-        usleep(100000);  // pausa para controlar a velocidade de atualização do jogo (em microsegundos)
+        // **4. Atualizar a tela**
+        screenUpdate();
+
+        // **5. Controle de tempo**
+        usleep(100000); // pausa para controlar a velocidade do jogo (em microsegundos)
     }
 }
+
 
 
 
