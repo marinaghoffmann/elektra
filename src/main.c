@@ -134,7 +134,8 @@ int main(){
     telainicial();
 
     desenharNave((WIDTH - 5), HEIGHT - 4);  // desenha a nave na posição 
-    moverNave();          
+    moverNave();        
+    // A FUNÇÃO DE DESENHAR ASTEROIDES ESTA DENTRO DE MOVERNAVE  
     
     // apaga a nave da tela depois do movimento
     apagaNave((WIDTH - 5), HEIGHT - 4);     // dpaga a nave da posição original 

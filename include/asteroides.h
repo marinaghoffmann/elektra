@@ -20,6 +20,5 @@
 #ifndef ASTEROIDES_H
 #define ASTEROIDES_H
 
-void print_asteroides();
-
+void desenharAsteroides();
 #endif

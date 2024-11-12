@@ -58,6 +58,7 @@ void moverNave() {
 
     screenClear();
     desenharBorda();
+    desenharAsteroides(); // desenha os asteroides !!!!!!
     desenharNave(x, y);
     screenUpdate();
 

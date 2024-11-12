@@ -8,7 +8,7 @@
 #include "screen.h"
 
 #define WIDTH 200        // Nova largura
-#define HEIGHT 100        // Nova altura
+#define HEIGHT 50        // Nova altura
 
 void screenDrawBorders() 
 {
