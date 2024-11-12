@@ -49,11 +49,10 @@
 #define SCRSTARTY      1
 #define SCRENDY        23
 
-#define MINX 3           // Limite mínimo de X ajustado
-#define MINY 3           // Limite mínimo de Y ajustado
-#define MAXX (WIDTH - 4) // Limite máximo de X ajustado para bordas mais grossas
-#define MAXY (HEIGHT - 4)     // max screen vertical pos
-
+#define MAXX 120
+#define MINX 1
+#define MAXY 40
+#define MINY 1
 /**
  * Screen Colors type
 */

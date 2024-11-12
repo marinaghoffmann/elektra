@@ -1,6 +1,8 @@
 #include "nave.h"
 #include "screen.h"
 #include "keyboard.h"
+#include "asteroides.h"
+#include <unistd.h>
 
 #define WIDTH 130
 #define HEIGHT 40 //talvez tenha que mudar dps por causa dos asteroides, mt baixa?

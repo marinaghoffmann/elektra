@@ -3,10 +3,6 @@
 #include "screen.h"
 
 #define MAX_ASTEROIDES 10
-#define MAXX 120
-#define MINX 1
-#define MAXY 40
-#define MINY 1
 
 struct Asteroide {
     int x;

@@ -21,4 +21,6 @@
 #define ASTEROIDES_H
 
 void desenharAsteroides();
+void inicializarAsteroides(); 
+void atualizarAsteroides();
 #endif
