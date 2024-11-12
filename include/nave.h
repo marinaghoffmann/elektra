@@ -12,6 +12,7 @@ void moverNave();                // Função para mover a nave
 void apagaNave(int x, int y);    // Função para apagar a nave
 void telainicial();              // Função para a tela inicial do jogo
 void desenharAsteroides();
+void QuedasDosAsteroides();
 
 
 #endif

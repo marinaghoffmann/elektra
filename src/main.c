@@ -129,18 +129,45 @@ void telainicial()
 #define WIDTH 130
 #define HEIGHT 40 
 
-int main(){
-    screenInit(1);      // inicializa a tela
+int main() {
+    screenInit(1); // inicializa a tela
     telainicial();
 
-    desenharNave((WIDTH - 5), HEIGHT - 4);  // desenha a nave na posição 
-    moverNave();        
-    // A FUNÇÃO DE DESENHAR ASTEROIDES ESTA DENTRO DE MOVERNAVE  
-    
-    // apaga a nave da tela depois do movimento
-    apagaNave((WIDTH - 5), HEIGHT - 4);     // dpaga a nave da posição original 
+    int nave_x = (WIDTH - 5) / 2;
+    int nave_y = HEIGHT - 4;
 
-    screenDestroy(); 
+    inicializarAsteroides(); // Inicializa asteroides
 
-    return 0; 
+    // Loop principal
+    while (1) {
+        // **1. Checar entrada do jogador**
+        if (keyhit()) {
+            char tecla = readch();
+            apagaNave(nave_x, nave_y); // apaga a nave da posição atual
+
+            // Movimenta nave com setas
+            if (tecla == 27 && getchar() == 91) {
+                tecla = getchar();
+                if (tecla == 67 && nave_x < WIDTH - 5) nave_x++;   // Direita
+                else if (tecla == 68 && nave_x > 0) nave_x--;      // Esquerda
+            }
+            if (tecla == 's') break; // Sai do jogo se pressionar 's'
+        }
+
+        // **2. Atualizar asteroides**
+        atualizarAsteroides();
+
+        // **3. Desenhar tudo**
+        desenharNave(nave_x, nave_y);
+        desenharAsteroides();
+
+        // **4. Atualizar a tela**
+        screenUpdate();
+
+        // **5. Controle de tempo**
+        usleep(100000); // Define o tempo de atualização do jogo
+    }
+
+    screenDestroy(); // Finaliza a tela
+    return 0;
 }
