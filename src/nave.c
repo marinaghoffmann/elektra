@@ -69,7 +69,7 @@ void moverNave() {
 
         // move a nave com base na tecla pressionada
         if (tecla == 27) {  // a tecla "Escape" é o prefixo para as setas, as setas são uma tecla especial
-            tecla = getchar();  // lê o próximo caractere que é a tecla da seta
+            tecla = getchar();  // lê o próximo caractere que é a tecla da seta legal
 
             if (tecla == 91) { // verifica a sequência que indica que é uma seta, para que seja lido como seta
                 tecla = getchar();  // lê o próximo caractere da sequência
