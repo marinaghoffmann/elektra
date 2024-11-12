@@ -71,7 +71,7 @@ void desenharAsteroides() {
         asteroides[i].y = rand() % (MAXY - MINY) + MINY; // garante que y esteja dentro do limite
         
         screenGotoxy(asteroides[i].x, asteroides[i].y);
-        printf("*");
+        printf("*0*");
     }
     // liberar memória
     free(asteroides);
