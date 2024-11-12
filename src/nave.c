@@ -11,14 +11,6 @@ void desenharBorda() {
 
     screenSetColor(WHITE, DARKGRAY);
 
-    // desenhar bordas horizontais
-    for (int x = 1; x <= WIDTH; x++) { // witdh = largura
-        screenGotoxy(x, 1);          // parte de cima
-        printf("=");
-        screenGotoxy(x, HEIGHT);     // parte de baixo
-        printf("=");
-    }
-
     // desenhar bordas verticais
     for (int y = 1; y <= HEIGHT; y++) {
         screenGotoxy(1, y);          // parte da esquerda
@@ -53,39 +45,42 @@ void apagaNave(int x, int y) {
 }
 
 void moverNave() {
-    int x = (WIDTH - 5) / 2, y = HEIGHT - 4; // posição inicial da nave (MODIFICADO) agora a principio a nave iniciará no centro inferior da tela
+    int x = (WIDTH - 5) / 2, y = HEIGHT - 4;  // posição inicial da nave
     int tecla;
 
-    screenClear();
-    desenharBorda();
-    desenharAsteroides(); // desenha os asteroides !!!!!!
-    desenharNave(x, y);
-    screenUpdate();
+    screenClear();        // limpa a tela para começar o jogo
+    desenharBorda();      // desenha a borda da tela
+    inicializarAsteroides(); // inicializa as posições iniciais dos asteroides
+    desenharNave(x, y);   // desenha a nave na posição inicial
+    screenUpdate();       // atualiza a tela para mostrar a nave e borda
 
-    while (1) {  //ENTENDER UM POUCO MELHOR COMO FUNCIONA ESSA TECLA 27 E A 91
-        tecla = capturaTecla(); // lê a tecla clicada no teclado e armazena em tecla 
+    while (1) {  // loop principal do jogo
+        tecla = capturaTecla(); // lê a tecla clicada no teclado e armazena em tecla
 
         apagaNave(x, y); // apaga a nave da posição atual
 
         // move a nave com base na tecla pressionada
-        if (tecla == 27) {  // a tecla "Escape" é o prefixo para as setas, as setas são uma tecla especial
-            tecla = getchar();  // lê o próximo caractere que é a tecla da seta legal
+        if (tecla == 27) {  // a tecla "Escape" é o prefixo para as setas
+            tecla = getchar();  // lê o próximo caractere que é a tecla da seta
 
-            if (tecla == 91) { // verifica a sequência que indica que é uma seta, para que seja lido como seta
+            if (tecla == 91) { // verifica a sequência que indica que é uma seta
                 tecla = getchar();  // lê o próximo caractere da sequência
 
-                if (tecla == 67 && x < MAXX - 5) x++; // seta para a direita e verifica se a nave esta dentro do limite da tela (Houve uma modificação nessa linha para o novo tamanho da nave (de 7 foi para 5))
-                else if (tecla == 68 && x > MINX) x--;    // seta para a esquerda e verifica se a nave esta dentro do limite da tela
+                if (tecla == 67 && x < MAXX - 5) x++; // seta para a direita e verifica limite da tela
+                else if (tecla == 68 && x > MINX) x--; // seta para a esquerda e verifica limite da tela
             }
         }
 
-        if (tecla == 's') {
-            telainicial();  
-            break;          
+        if (tecla == 's') {     // se o jogador pressionar 's', sai para a tela inicial
+            telainicial();
+            break;
         }
 
-        desenharNave(x, y);
-        screenUpdate(); // atualiza a tela para exibir as posições da nave
+        atualizarAsteroides();  // move os asteroides para baixo e redesenha em novas posições
+        desenharNave(x, y);     // redesenha a nave na nova posição
+        screenUpdate();         // atualiza a tela para exibir as posições da nave e asteroides
+
+        usleep(100000);  // pausa para controlar a velocidade de atualização do jogo (em microsegundos)
     }
 }
 

@@ -1,79 +1,62 @@
-//#include <stdlib.h>
-//#include "asteroides.h"
-//#include "screen.h"
-
-//#define WIDTH 80
-//#define HEIGHT 24
-
-//extern int game_over;
-//int velocidade_asteroides = 300000;
-//int asteroides_ativos = 1;
-//Asteroide asteroides[MAX_ASTEROIDES];
-
-//void gerarAsteroides() {
-    //int asteroides_count = 0;
-    //for (int i = 0; i < MAX_ASTEROIDES; i++) {
-        //if (asteroides[i].ativo)
-            //asteroides_count++;
-    //}
-    //if (asteroides_count < asteroides_ativos) {
-        //for (int i = 0; i < MAX_ASTEROIDES; i++) {
-            //if (!asteroides[i].ativo) {
-                //asteroides[i].x = rand() % WIDTH;
-                //asteroides[i].y = 0;
-                //asteroides[i].ativo = 1;
-                //break;
-            //}
-        //}
-    //}
-//}
-
-//void moverAsteroides() {
-    //for (int i = 0; i < MAX_ASTEROIDES; i++) {
-        //if (asteroides[i].ativo) {
-            //asteroides[i].y++;
-            //if (asteroides[i].y >= HEIGHT - 1) {
-                //game_over = 1;
-            //}
-        //}
-    //}
-//}
-
 #include "asteroides.h"
-#include <stdio.h>
+#include <stdlib.h>
 #include "screen.h"
-#include <stdlib.h> // para a função rand(), para os asteroides nasçam em posições aleatórias
 
-#define MAX_ASTEROIDES 10 // número máximo de asteroides
-#define MAXX 130 // limite máximo da coordanada x
-#define MINX 1  // limite minimo de x
-#define MAXY 40 //...
+#define MAX_ASTEROIDES 10
+#define MAXX 120
+#define MINX 1
+#define MAXY 40
 #define MINY 1
 
-// struct para armazenar os asteroides
 struct Asteroide {
     int x;
     int y;
 };
 
-void desenharAsteroides() {
-    // criando uma nova struct para armazenar os asteroides
-    struct Asteroide* asteroides = (struct Asteroide*)malloc(MAX_ASTEROIDES * sizeof(struct Asteroide));
-    
-    if (asteroides == NULL) { // para falhas
-        printf("Falha na alocação de memória!\n");
-        return;
-    }
+// Array de asteroides como variável global
+struct Asteroide asteroides[MAX_ASTEROIDES];
 
-    // gera as posições aleatórias para os asteroides
-    for (int i = 0; i < MAX_ASTEROIDES; i++) { // asteroides[i] pq vai mudando e aumentando o valor de i para mudar de asteroide
-        asteroides[i].x = rand() % (MAXX - MINX) + MINX; // garante que x esteja dentro do limite, por isso (MAXX - MINX) + MINX
-        asteroides[i].y = rand() % (MAXY - MINY) + MINY; // garante que y esteja dentro do limite
-        
+void inicializarAsteroides() {
+    // Definir uma área segura para o nascimento dos asteroides, evitando as bordas laterais
+    for (int i = 0; i < MAX_ASTEROIDES; i++) {
+        // Gerar uma coordenada X aleatória que não colida com as bordas laterais (evitando as colunas 1 e WIDTH)
+        // Como o asteroide ocupa três caracteres (*0*), precisamos garantir que ele não ultrapasse a borda
+        asteroides[i].x = rand() % (MAXX - 2 - 2) + 2; // Limita a área de X para que o *0* não ultrapasse a borda lateral
+
+        // Gerar uma coordenada Y aleatória dentro do topo da tela, mas dentro da área visível
+        asteroides[i].y = rand() % (MAXY / 4) + 1; // Exemplo: aparecer na parte superior, mas não ultrapassar 1/4 da altura total
+
+        // Garantir que o asteróide não vá para a borda
+        if (asteroides[i].x <= 1) {
+            asteroides[i].x = 2; // Ajusta a posição mínima para evitar que o *0* ultrapasse a borda esquerda
+        }
+        if (asteroides[i].x >= MAXX - 2) {
+            asteroides[i].x = MAXX - 3; // Ajusta a posição máxima para evitar que o *0* ultrapasse a borda direita
+        }
+    }
+}
+
+void desenharAsteroides() {
+    for (int i = 0; i < MAX_ASTEROIDES; i++) {
         screenGotoxy(asteroides[i].x, asteroides[i].y);
         printf("*0*");
     }
-    // liberar memória
-    free(asteroides);
 }
 
+void atualizarAsteroides() {
+    // Apaga a posição atual dos asteroides
+    for (int i = 0; i < MAX_ASTEROIDES; i++) {
+        screenGotoxy(asteroides[i].x, asteroides[i].y);
+        printf("   ");
+        
+        // Move o asteroide para baixo
+        asteroides[i].y += 1;
+
+        // Se o asteroide sair da tela, reposiciona no topo com nova posição horizontal
+        if (asteroides[i].y >= MAXY) {
+            asteroides[i].y = MINY;
+            asteroides[i].x = rand() % (MAXX - MINX) + MINX;
+        }
+    }
+    desenharAsteroides();  // redesenha os asteroides em suas novas posições
+}
