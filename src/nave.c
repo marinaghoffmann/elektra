@@ -8,22 +8,6 @@
 #define HEIGHT 40 //talvez tenha que mudar dps por causa dos asteroides, mt baixa?
 
 //Nave nave;
-
-void desenharBorda() {
-
-    screenSetColor(WHITE, DARKGRAY);
-
-    // desenhar bordas verticais
-    for (int y = 1; y <= HEIGHT; y++) {
-        screenGotoxy(1, y);          // parte da esquerda
-        printf("||");
-        screenGotoxy(WIDTH, y);      // parte da direita
-        printf("||");
-    }
-
-    screenSetNormal();       
-}
-
 void desenharNave(int x, int y) {
     // Define as cores da nave
     screenSetColor(LIGHTCYAN, DARKGRAY);
@@ -51,7 +35,6 @@ void moverNave() {
     int tecla;
 
     screenClear();        // limpa a tela para começar o jogo
-    desenharBorda();      // desenha a borda da tela
     inicializarAsteroides(); // inicializa as posições iniciais dos asteroides
     desenharNave(x, y);   // desenha a nave na posição inicial
     screenUpdate();       // atualiza a tela para mostrar a nave e borda
