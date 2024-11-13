@@ -133,10 +133,106 @@ void verificarColisaoComAsteroides(Bala balas[], int maxBalas, Asteroide asteroi
     }
 }
 
+void exibirEstrelas() {
+    int i, j;
+    for (i = 0; i < 20; i++) { // Número de linhas
+        for (j = 0; j < 80; j++) { // Largura da tela
+            if (rand() % 100 < 5) { // 5% de chance de colocar uma estrela
+                screenGotoxy(j, i);
+                screenSetColor(YELLOW, DARKGRAY);
+                printf("*");
+            }
+        }
+    }
+}
+
+void menu() {
+    screenClear();
+    srand(time(NULL)); // Inicializa o gerador de números aleatórios
+
+    // Animação do título caindo
+    for (int y = 0; y < 10; y++) { // 10 é o número de linhas que o título vai cair
+        screenClear(); // Limpa a tela a cada iteração
+        screenGotoxy(MINX + 5, MINY + 10 + y);
+        screenSetColor(WHITE, DARKGRAY);
+        printf("▓█████  ██▓    ▓█████  ██ ▄█▀▄▄▄█████▓ ██▀███   ▄▄▄      \n");
+        screenGotoxy(MINX + 5, MINY + 11 + y);
+        printf("▓█   ▀ ▓██▒    ▓█   ▀  ██▄█▒ ▓  ██▒ ▓▒▓██ ▒ ██▒▒████▄    \n");
+        screenGotoxy(MINX + 5, MINY + 12 + y);
+        printf("▒███   ▒██░    ▒███   ▓███▄░ ▒ ▓██░ ▒░▓██ ░▄█ ▒▒██  ▀█▄  \n");
+        screenGotoxy(MINX + 5, MINY + 13 + y);
+        printf("▒▓█  ▄ ▒██░    ▒▓█  ▄ ▓██ █▄ ░ ▓██▓ ░ ▒██▀▀█▄  ░██▄▄▄▄██ \n");
+        screenGotoxy(MINX + 5, MINY + 14 + y);
+        printf("░▒████▒░██████▒░▒████▒▒██▒ █▄  ▒██▒ ░ ░██▓ ▒██▒ ▓█   ▓██▒\n");
+        screenGotoxy(MINX + 5, MINY + 15 + y);
+        printf("░░ ▒░ ░░ ▒░▓  ░░░ ▒░ ░▒ ▒▒ ▓▒  ▒ ░░   ░ ▒▓ ░▒▓░ ▒▒   ▓▒█░\n");
+        screenGotoxy(MINX + 5, MINY + 16 + y);
+        printf(" ░ ░  ░░ ░ ▒  ░ ░ ░  ░░ ░▒ ▒░    ░      ░▒ ░ ▒░  ▒   ▒▒ ░\n");
+        screenGotoxy(MINX + 5, MINY + 17 + y);
+        printf("   ░     ░ ░      ░   ░ ░░ ░   ░        ░░   ░   ░   ▒   \n");
+        screenGotoxy(MINX + 5, MINY + 18 + y);
+        printf("   ░  ░    ░  ░   ░  ░░  ░               ░           ░  ░\n");
+
+        fflush(stdout);
+        usleep(200000); // Pausa de 200ms entre cada linha
+    }
+
+    // Exibe as instruções
+    screenGotoxy(MINX + 5, MINY + 30);
+    screenSetColor(WHITE, DARKGRAY);
+    printf("Proteja o planeta da tempestade de asteroides!");
+    screenGotoxy(MINX + 5, MINY + 31);
+    printf("Destrua-os antes que eles atinjam a Terra. CUIDADO! Não seja atingido.");
+    screenGotoxy(MINX + 5, MINY + 32);
+    printf("Use as teclas de seta para mover a nave e espaço para atirar.");
+    screenGotoxy(MINX + 5, MINY + 33);
+    printf("Pressione 'C' para começar ou 'S' para sair.");
+
+    // Exibe as estrelas no fundo
+    exibirEstrelas();  // Chama a função para exibir as estrelas no fundo
+
+    fflush(stdout);
+
+    // Espera pela entrada do usuário
+    while (1) {
+        if (keyhit()) {
+            char ch = readch();
+            if (ch == 'C' || ch == 'c') {
+                return;  // Sai do menu e começa o jogo
+            } else if (ch == 'S' || ch == 's') {
+                exit(0);  // Sai do jogo
+            }
+        }
+    }
+}
+
 void exibirPontuacao() {
     screenGotoxy(MAXX / 2 - 10, 0);  // Posiciona no topo, centralizado
     screenSetColor(WHITE, DARKGRAY);
     printf("Pontuação: %d", pontuacao);
+}
+
+void exibirTelaSaida() {
+    screenClear();
+    screenGotoxy(MAXX / 2 - 20, MAXY / 2 - 1);
+    screenSetColor(RED, DARKGRAY);
+    printf("Você abandonou a missão, o planeta foi destruído!");
+    
+    screenGotoxy(MAXX / 2 - 10, MAXY / 2 + 1);
+    printf("Pontuação final: %d", pontuacao);
+    
+    screenGotoxy(MAXX / 2 - 10, MAXY / 2 + 3);
+    printf("Aperte 1 para voltar à tela inicial.");
+
+    fflush(stdout); // Garante que a tela seja atualizada sem `screenRefresh`
+
+    // Aguarda o jogador pressionar '1' para voltar à tela inicial
+    while (1) {
+        if (keyhit() && readch() == '1') {
+            menu(); // Chama a função que exibe a tela inicial
+            return; // Sai da função para retornar à tela inicial
+        }
+    }
 }
 
 void jogo() {
@@ -173,6 +269,7 @@ void jogo() {
                 // Dispara uma nova bala
                 dispararBala(balas, MAX_BALAS, nave.x, nave.y);  // Dispara se houver uma bala inativa
             } else if (ch == 'S' || ch == 's') {
+                exibirTelaSaida();
                 return;  // Retorna para o menu
             }
         }
@@ -210,6 +307,7 @@ void jogo() {
 }
 
 int main() {
+    menu();
     srand(time(NULL));  // Inicializa o gerador de números aleatórios
     jogo();  // Chama a função do jogo
     return 0;
