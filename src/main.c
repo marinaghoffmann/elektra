@@ -100,6 +100,10 @@ void jogo() {
             } else if (ch == ' ') {
                 // Dispara uma nova bala
                 dispararBala(balas, MAX_BALAS, nave.x, nave.y);  // Dispara se houver uma bala inativa
+            } else if (ch == 'S' || ch == 's') {
+                // Se pressionar 'S', volta para o menu
+                menu();
+                return;  // Retorna para o menu e interrompe o jogo atual
             }
         }
 
@@ -145,6 +149,7 @@ void jogo() {
         }
     }
 }
+
 
 
 
