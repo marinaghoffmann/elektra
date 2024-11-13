@@ -247,31 +247,41 @@ void exibirTelaSaida() {
 }
 
 void gameOver() {
-    screenClear();
-    screenGotoxy(MAXX / 2 - 20, MAXY / 2 - 1);
-    screenSetColor(RED, DARKGRAY);
-    printf("TIME OUT!");
-    
-    screenGotoxy(MAXX / 2 - 10, MAXY / 2 + 1);
-    printf("Pontuação final: %d", pontuacao);
-
     salvarPontuacao(pontuacao);
-    
-    screenGotoxy(MAXX / 2 - 10, MAXY / 2 + 3);
-    printf("Aperte c para jogar novamente.");
+    for (int y = 0; y < 10; y++) { // 10 é o número de linhas que a mensagem vai cair
+        screenClear(); // Limpa a tela a cada iteração
+        screenGotoxy(MINX + 5, MINY + 10 + y);
+        screenSetColor(RED, BLACK);
+        printf("████████╗██╗███╗   ███╗███████╗     ██████╗ ██╗   ██╗████████╗\n");
+        screenGotoxy(MINX + 5, MINY + 11 + y);
+        printf("╚══██╔══╝██║████╗ ████║██╔════╝    ██╔═══██╗██║   ██║╚══██╔══╝\n");
+        screenGotoxy(MINX + 5, MINY + 12 + y);
+        printf("   ██║   ██║██╔████╔██║█████╗      ██║   ██║██║   ██║   ██║   \n");
+        screenGotoxy(MINX + 5, MINY + 13 + y);
+        printf("   ██║   ██║██║╚██╔╝██║██╔══╝      ██║   ██║██║   ██║   ██║   \n");
+        screenGotoxy(MINX + 5, MINY + 14 + y);
+        printf("   ██║   ██║██║ ╚═╝ ██║███████╗    ╚██████╔╝╚██████╔╝   ██║   \n");
+        screenGotoxy(MINX + 5, MINY + 15 + y);
+        printf("   ╚═╝   ╚═╝╚═╝     ╚═╝╚══════╝     ╚═════╝  ╚═════╝    ╚═╝   \n");
 
-    screenGotoxy(MAXX / 2 - 10, MAXY / 2 + 4);
-    printf("Aperte 1 para voltar à tela inicial.");
+        fflush(stdout);
+        usleep(200000); // Pausa de 200ms entre cada linha
+    }
 
-    fflush(stdout); // Garante que a tela seja atualizada sem `screenRefresh`
+    // Exibe a pontuação final e instruções após a animação
+    screenGotoxy(MAXX / 2 - 25, MAXY / 2 + 6);
+    screenSetColor(WHITE, BLACK);
+    printf("Tempo esgotado! Aperte 'C' para tentar novamente ou '1' para voltar ao menu.");
 
-     while (1) {
+    fflush(stdout);
+
+    while (1) {
         if (keyhit()) {
             char ch = readch();
             if (ch == '1') {
                 menu(); 
                 return; 
-            } else if (ch == 'c' || ch == 'C') {
+            } else if (ch == 'C' || ch == 'c') {
                 jogo(); 
                 return; 
             }
