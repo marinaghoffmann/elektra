@@ -13,6 +13,7 @@
 #define NAVE_Y_INICIAL 20
 #define MAXX 80
 #define MAXY 25
+#define DURACAO_JOGO 60  // Duração do jogo em segundos
 
 // Variável global para pontuação
 int pontuacao = 0;  // Inicializa a pontuação
@@ -212,6 +213,12 @@ void exibirPontuacao() {
     printf("Pontuação: %d", pontuacao);
 }
 
+void exibirTempoRestante(int tempoRestante) {
+    screenGotoxy(MAXX / 2 + 10, 0);  // Posiciona no topo, ao lado da pontuação
+    screenSetColor(WHITE, DARKGRAY);
+    printf("Tempo restante: %02d:%02d", tempoRestante / 60, tempoRestante % 60);
+}
+
 void exibirTelaSaida() {
     screenClear();
     screenGotoxy(MAXX / 2 - 20, MAXY / 2 - 1);
@@ -235,7 +242,32 @@ void exibirTelaSaida() {
     }
 }
 
+void gameOver() {
+    screenClear();
+    screenGotoxy(MAXX / 2 - 20, MAXY / 2 - 1);
+    screenSetColor(RED, DARKGRAY);
+    printf("TIME OUT!");
+    
+    screenGotoxy(MAXX / 2 - 10, MAXY / 2 + 1);
+    printf("Pontuação final: %d", pontuacao);
+    
+    screenGotoxy(MAXX / 2 - 10, MAXY / 2 + 3);
+    printf("Aperte 1 para voltar à tela inicial.");
+
+    fflush(stdout); // Garante que a tela seja atualizada sem `screenRefresh`
+
+    // Aguarda o jogador pressionar '1' para voltar à tela inicial
+    while (1) {
+        if (keyhit() && readch() == '1') {
+            menu(); // Chama a função que exibe a tela inicial
+            return; // Sai da função para retornar à tela inicial
+        }
+    }
+}
+
 void jogo() {
+    int tempoRestante = DURACAO_JOGO;  // Inicializa o tempo restante
+    clock_t inicio = clock();       
     int *pontuacao = malloc(sizeof(int));
     if (!pontuacao) {
         fprintf(stderr, "Erro ao alocar memória para a pontuação!\n");
@@ -257,28 +289,28 @@ void jogo() {
     // Inicia o timer com um delay configurável
     timerInit(UPDATE_DELAY);
 
-    // Loop principal do jogo
-    while (1) {
-        // Verifica se a tecla foi pressionada
+    while (tempoRestante > 0) {
+        // Verifica se o tempo passou 1 segundo
+        if (((clock() - inicio) / CLOCKS_PER_SEC) >= 1) {
+            tempoRestante--;          // Reduz o tempo restante
+            inicio = clock();         // Reinicia o tempo base
+        }
+
+        // Verifica teclas pressionadas
         if (keyhit()) {
             char ch = readch();
-            if (ch == 27) {  // Se a tecla pressionada é ESC (início da sequência de setas)
-                ch = readch();  // Lê o próximo caractere
-                if (ch == '[') {  // Verifica se é a sequência correta
-                    ch = readch();  // Lê o próximo caractere
-                    if (ch == 'D') {
-                        moverNave(&nave, -1);  // Move a nave para a esquerda
-                    } else if (ch == 'C') {
-                        moverNave(&nave, 1);  // Move a nave para a direita
-                    }
+            if (ch == 27) {
+                ch = readch();
+                if (ch == '[') {
+                    ch = readch();
+                    if (ch == 'D') moverNave(&nave, -1); // Esquerda
+                    if (ch == 'C') moverNave(&nave, 1);  // Direita
                 }
             } else if (ch == ' ') {
-                // Dispara uma nova bala
-                dispararBala(balas, MAX_BALAS, nave.x, nave.y);  // Dispara se houver uma bala inativa
+                dispararBala(balas, MAX_BALAS, nave.x, nave.y);
             } else if (ch == 'S' || ch == 's') {
                 exibirTelaSaida();
-                free(pontuacao);
-                return;  // Retorna para o menu
+                return;
             }
         }
 
@@ -312,6 +344,7 @@ void jogo() {
             fflush(stdout);  // Garante a atualização imediata da tela
         }
     }
+    gameOver();
 }
 
 int main() {
