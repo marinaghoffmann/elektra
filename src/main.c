@@ -23,7 +23,8 @@ void jogo() {
     Asteroide asteroides[MAX_ASTEROIDES];
     inicializarAsteroides(asteroides, MAX_ASTEROIDES);
 
-    // Inicializa as balas (um milhão de balas disponíveis)
+    // Inicializa as balas
+    Bala balas[MAX_BALAS];
     inicializarBalas(balas, MAX_BALAS);  // Inicializa todas as balas como inativas
 
     // Inicia o timer com um delay configurável
@@ -34,10 +35,16 @@ void jogo() {
         // Verifica se a tecla foi pressionada
         if (keyhit()) {
             char ch = readch();
-            if (ch == 'a') {
-                moverNave(&nave, -1);  // Move a nave para a esquerda
-            } else if (ch == 'd') {
-                moverNave(&nave, 1);  // Move a nave para a direita
+            if (ch == 27) {  // Se a tecla pressionada é ESC (início da sequência de setas)
+                ch = readch();  // Lê o próximo caractere
+                if (ch == '[') {  // Verifica se é a sequência correta
+                    ch = readch();  // Lê o próximo caractere
+                    if (ch == 'D') {
+                        moverNave(&nave, -1);  // Move a nave para a esquerda
+                    } else if (ch == 'C') {
+                        moverNave(&nave, 1);  // Move a nave para a direita
+                    }
+                }
             } else if (ch == ' ') {
                 // Dispara uma nova bala
                 dispararBala(balas, MAX_BALAS, nave.x, nave.y);  // Dispara se houver uma bala inativa
@@ -86,6 +93,7 @@ void jogo() {
         }
     }
 }
+
 
 
 // Função principal
