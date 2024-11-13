@@ -63,15 +63,11 @@ void menu() {
     screenSetColor(WHITE, DARKGRAY);
     printf("Proteja o planeta da tempestade de asteroides!");
     screenGotoxy(MINX + 5, MINY + 31);
-    printf("Pressione 'C' para começar ou 'S' para sair.");
-    screenGotoxy(MINX + 5, MINY + 33);
-    printf("Destrua os asteroides antes que eles atinjam a Terra.");
-    screenGotoxy(MINX + 5, MINY + 34);
-    printf("CUIDADO! Não seja atingido.");
-    screenGotoxy(MINX + 5, MINY + 35);
+    printf("Destrua-os antes que eles atinjam a Terra. CUIDADO! Não seja atingido.");
+    screenGotoxy(MINX + 5, MINY + 32);
     printf("Use as teclas de seta para mover a nave e espaço para atirar.");
-    screenGotoxy(MINX + 5, MINY + 36);
-    printf("Aperte 'C' para começar. Boa sorte!...");
+    screenGotoxy(MINX + 5, MINY + 33);
+    printf("Pressione 'C' para começar ou 'S' para sair.");
 
     // Exibe as estrelas no fundo
     exibirEstrelas();  // Chama a função para exibir as estrelas no fundo
