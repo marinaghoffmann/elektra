@@ -183,7 +183,7 @@ void menu() {
     screenSetColor(WHITE, DARKGRAY);
     printf("Proteja o planeta da tempestade de asteroides!");
     screenGotoxy(MINX + 5, MINY + 31);
-    printf("Destrua-os antes que eles atinjam a Terra. CUIDADO! Não seja atingido.");
+    printf("Destrua-os antes que eles atinjam a Terra.");
     screenGotoxy(MINX + 5, MINY + 32);
     printf("Use as teclas de seta para mover a nave e espaço para atirar.");
     screenGotoxy(MINX + 5, MINY + 33);
@@ -208,13 +208,13 @@ void menu() {
 }
 
 void exibirPontuacao() {
-    screenGotoxy(MAXX / 2 - 10, 0);  // Posiciona no topo, centralizado
+    screenGotoxy(MAXX / 2 - 15, 0);  // Posiciona mais à esquerda, para evitar sobreposição com o tempo
     screenSetColor(WHITE, DARKGRAY);
     printf("Pontuação: %d", pontuacao);
 }
 
 void exibirTempoRestante(int tempoRestante) {
-    screenGotoxy(MAXX / 2 + 10, 0);  // Posiciona no topo, ao lado da pontuação
+    screenGotoxy(MAXX / 2 + 5, 0);  // Posiciona mais à direita, para evitar sobreposição com a pontuação
     screenSetColor(WHITE, DARKGRAY);
     printf("Tempo restante: %02d:%02d", tempoRestante / 60, tempoRestante % 60);
 }
@@ -326,11 +326,11 @@ void jogo() {
             atualizarBalas(balas, MAX_BALAS);  // Atualiza as balas (movendo-as para cima)
             verificarColisaoComAsteroides(balas, MAX_BALAS, asteroides, MAX_ASTEROIDES, 2);  // Verifica colisões
 
-            // Desenha a nave
             desenharNave(&nave);
 
-            // Exibe a pontuação
             exibirPontuacao();
+
+            exibirTempoRestante(tempoRestante);
 
             // Desenha as balas ativas
             for (int i = 0; i < MAX_BALAS; i++) {
