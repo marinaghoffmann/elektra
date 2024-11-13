@@ -11,14 +11,15 @@
 #define MAX_BALAS 5        // Número máximo de balas simultâneas
 #define NAVE_X_INICIAL 40  // Posição inicial da nave
 #define NAVE_Y_INICIAL 20
-#define MAXX 80
-#define MAXY 25
-#define DURACAO_JOGO 60  // Duração do jogo em segundos
+#define DURACAO_JOGO 60  
 
 // Variável global para pontuação
-int pontuacao = 0;  // Inicializa a pontuação
+int pontuacao = 0;  
 
-// Estruturas
+void exibirPontuacoes();
+void salvarPontuacao(int pontuacao);
+void jogo();
+
 typedef struct {
     int x, y;
 } Nave;
@@ -202,7 +203,7 @@ void menu() {
                 return; 
             } else if (ch == 'S' || ch == 's') {
                 exit(0);  // Sai do jogo
-            } else if (ch == ' V' || ch == 'v'){
+            } else if (ch == 'V' || ch == 'v'){
                 exibirPontuacoes(); // Exibe as pontuações salvas
                 screenGotoxy(MAXX / 2 - 10, MAXY - 2);
             }
