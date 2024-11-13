@@ -1,6 +1,7 @@
 #include "bala.h"
 #include "asteroides.h"
 #include <stdlib.h>  // Para a função abs
+#include <math.h>
 
 Bala balas[MAX_BALAS];  // Inicializa a lista de balas
 
