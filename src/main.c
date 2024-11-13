@@ -12,7 +12,59 @@
 #define MAX_ASTEROIDES 10  // Número máximo de asteroides no jogo
 
 // Função principal do jogo
-// Função principal do jogo
+
+void menu() {
+    screenClear();
+
+    screenGotoxy(MINX + 5, MINY + 10);
+    screenSetColor(WHITE, DARKGRAY);
+    printf("███████╗██╗░░░░░███████╗██╗░░██╗████████╗██████╗░░█████╗░\n");
+    screenGotoxy(MINX + 5, MINY + 11);
+    screenSetColor(WHITE, DARKGRAY);
+    printf("██╔════╝██║░░░░░██╔════╝██║░██╔╝╚══██╔══╝██╔══██╗██╔══██╗\n");
+    screenGotoxy(MINX + 5, MINY + 12);
+    screenSetColor(WHITE, DARKGRAY);
+    printf("█████╗░░██║░░░░░█████╗░░█████═╝░░░░██║░░░██████╔╝███████║\n");
+    screenGotoxy(MINX + 5, MINY + 13);
+    screenSetColor(WHITE, DARKGRAY);
+    printf("██╔══╝░░██║░░░░░██╔══╝░░██╔═██╗░░░░██║░░░██╔══██╗██╔══██║\n");
+    screenGotoxy(MINX + 5, MINY + 14);
+    screenSetColor(WHITE, DARKGRAY);
+    printf("███████╗███████╗███████╗██║░╚██╗░░░██║░░░██║░░██║██║░░██║\n");
+    screenGotoxy(MINX + 5, MINY + 15);
+    screenSetColor(WHITE, DARKGRAY);
+    printf("╚══════╝╚══════╝╚══════╝╚═╝░░╚═╝░░░╚═╝░░░╚═╝░░╚═╝╚═╝░░╚═╝\n");
+    screenGotoxy(MINX + 5, MINY + 16);
+    screenSetColor(WHITE, DARKGRAY);
+    printf("Proteja o planeta da tempestade de asteroides!");
+    screenGotoxy(MINX + 5, MINY + 17);
+    screenSetColor(WHITE, DARKGRAY);
+    printf("Pressione 'C' para começar ou 'S' para sair.");
+
+    screenGotoxy(MINX + 5, MINY + 21);
+    printf("Destrua os asteroides antes que eles atinjam a Terra.");
+    screenGotoxy(MINX + 5, MINY + 22);
+    printf("CUIDADO! Não seja atingido.");
+    screenGotoxy(MINX + 5, MINY + 23);
+    printf("Use as teclas de seta para mover a nave e espaço para atirar.");
+    screenGotoxy(MINX + 5, MINY + 24);
+    printf("Aperte 'C' para começar. Boa sorte!...");
+
+    fflush(stdout);
+
+    // Espera pela entrada do usuário
+    while (1) {
+        if (keyhit()) {
+            char ch = readch();
+            if (ch == 'C' || ch == 'c') {
+                return;  // Sai do menu e começa o jogo
+            } else if (ch == 'S' || ch == 's') {
+                exit(0);  // Sai do jogo
+            }
+        }
+    }
+}
+
 void jogo() {
     Nave nave;  // Declara a nave
     inicializarNave(&nave);  // Inicializa a nave
@@ -96,11 +148,11 @@ void jogo() {
 
 
 
-// Função principal
 int main() {
     // Inicialização de componentes do jogo
     // Exemplo: screenInit(), keyboardInit(), etc.
 
+    menu();  // Exibe o menu antes de começar o jogo
     jogo();  // Chama a função do jogo
 
     return 0;
