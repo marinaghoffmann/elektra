@@ -3,7 +3,7 @@ CFLAGS = -I./include
 LDFLAGS = -lm
 
 # Lista de arquivos fonte
-SRC = ./src/main.c ./src/screen.c ./src/keyboard.c ./src/timer.c ./src/asteroides.c ./src/bala.c ./src/nave.c
+SRC = ./src/main.c ./src/screen.c ./src/keyboard.c ./src/timer.c 
 
 # Nome do executável
 TARGET = elektra.out
