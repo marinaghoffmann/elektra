@@ -252,15 +252,23 @@ void gameOver() {
     printf("Pontuação final: %d", pontuacao);
     
     screenGotoxy(MAXX / 2 - 10, MAXY / 2 + 3);
+    printf("Aperte c para jogar novamente.");
+
+    screenGotoxy(MAXX / 2 - 10, MAXY / 2 + 4);
     printf("Aperte 1 para voltar à tela inicial.");
 
     fflush(stdout); // Garante que a tela seja atualizada sem `screenRefresh`
 
-    // Aguarda o jogador pressionar '1' para voltar à tela inicial
-    while (1) {
-        if (keyhit() && readch() == '1') {
-            menu(); // Chama a função que exibe a tela inicial
-            return; // Sai da função para retornar à tela inicial
+     while (1) {
+        if (keyhit()) {
+            char ch = readch();
+            if (ch == '1') {
+                menu(); 
+                return; 
+            } else if (ch == 'c' || ch == 'C') {
+                jogo(); 
+                return; 
+            }
         }
     }
 }
