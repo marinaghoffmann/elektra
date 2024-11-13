@@ -131,26 +131,13 @@ void jogo() {
             }
 
             // Verifica colisão com os asteroides
-            for (int i = 0; i < MAX_BALAS; i++) {
-                if (balas[i].ativa) {
-                    for (int j = 0; j < MAX_ASTEROIDES; j++) {
-                        if (asteroides[j].ativo && balas[i].x == asteroides[j].x && balas[i].y == asteroides[j].y) {
-                            // Colidiu com um asteroide, destrói a bala e o asteroide
-                            asteroides[j].ativo = 0;  // Remove o asteroide
-                            balas[i].ativa = 0;  // Remove a bala
-                            break;  // Sai do loop de asteroides
-                        }
-                    }
-                }
-            }
+            verificarColisaoComAsteroides(balas, MAX_BALAS, asteroides, MAX_ASTEROIDES, 2);  // Distância de colisão 2
 
             fflush(stdout);  // Garante a atualização imediata da tela
             tickMovimento++; // Incrementa o contador de tick
         }
     }
 }
-
-
 
 
 int main() {

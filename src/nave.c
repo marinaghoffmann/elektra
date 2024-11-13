@@ -1,4 +1,3 @@
-// nave.c
 #include "nave.h"
 #include "screen.h"
 
