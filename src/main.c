@@ -386,6 +386,7 @@ void jogo() {
             fflush(stdout);  // Garante a atualização imediata da tela
         }
     }
+    free(pontuacao);
     gameOver();
 }
 
