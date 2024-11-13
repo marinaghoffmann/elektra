@@ -187,7 +187,7 @@ void menu() {
     screenGotoxy(MINX + 5, MINY + 32);
     printf("Use as teclas de seta para mover a nave e espaço para atirar.");
     screenGotoxy(MINX + 5, MINY + 33);
-    printf("Pressione 'C' para começar ou 'S' para sair.");
+    printf("Pressione 'C' para começar ou 'S' para sair e 'V' para ver pontuações anteriores.");
 
     // Exibe as estrelas no fundo
     exibirEstrelas();  // Chama a função para exibir as estrelas no fundo
@@ -199,9 +199,12 @@ void menu() {
         if (keyhit()) {
             char ch = readch();
             if (ch == 'C' || ch == 'c') {
-                return;  // Sai do menu e começa o jogo
+                return; 
             } else if (ch == 'S' || ch == 's') {
                 exit(0);  // Sai do jogo
+            } else if (ch == ' V' || ch == 'v'){
+                exibirPontuacoes(); // Exibe as pontuações salvas
+                screenGotoxy(MAXX / 2 - 10, MAXY - 2);
             }
         }
     }
@@ -250,6 +253,8 @@ void gameOver() {
     
     screenGotoxy(MAXX / 2 - 10, MAXY / 2 + 1);
     printf("Pontuação final: %d", pontuacao);
+
+    salvarPontuacao(pontuacao);
     
     screenGotoxy(MAXX / 2 - 10, MAXY / 2 + 3);
     printf("Aperte c para jogar novamente.");
@@ -271,6 +276,35 @@ void gameOver() {
             }
         }
     }
+}
+
+void salvarPontuacao(int pontuacao) {
+    FILE *arquivo = fopen("pontuacoes.txt", "a");  
+    if (arquivo == NULL) {
+        printf("Erro ao abrir o arquivo de pontuações!\n");
+        return;
+    }
+
+    fprintf(arquivo, "%d\n", pontuacao);
+
+    fclose(arquivo);
+}
+
+void exibirPontuacoes() {
+    FILE *arquivo = fopen("pontuacoes.txt", "r");
+    if (arquivo == NULL) {
+        printf("Nenhuma pontuação salva!\n");
+        return;
+    }
+
+    printf("\nPontuações Salvas:\n");
+
+    int pontuacao;
+    while (fscanf(arquivo, "%d", &pontuacao) != EOF) {
+        printf("%d\n", pontuacao);
+    }
+
+    fclose(arquivo);
 }
 
 void jogo() {
