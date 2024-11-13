@@ -1,26 +1,15 @@
-//#ifndef ASTEROIDES_H
-//#define ASTEROIDES_H
-
-//#define MAX_ASTEROIDES 10
-
-//typedef struct {
-    //int x, y;
-    //int ativo;
-//} Asteroide;
-
-//extern int velocidade_asteroides;
-//extern int asteroides_ativos;
-//extern Asteroide asteroides[MAX_ASTEROIDES];
-
-//void gerarAsteroides();
-//void moverAsteroides();
-
-//#endif
-
 #ifndef ASTEROIDES_H
 #define ASTEROIDES_H
 
-void desenharAsteroides();
-void inicializarAsteroides(); 
-void atualizarAsteroides();
+#define MAX_ASTEROIDES 10
+
+typedef struct {
+    int x, y;
+    int ativo;
+} Asteroide;
+
+void inicializarAsteroides(Asteroide asteroides[], int maxAsteroides);
+void atualizarAsteroides(Asteroide asteroides[], int maxAsteroides);
+void desenharAsteroides(const Asteroide asteroides[], int maxAsteroides);
+
 #endif

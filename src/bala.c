@@ -1,38 +1,32 @@
-//#include "bala.h"
-//#include "screen.h"
-
-//#define WIDTH 80
-//#define HEIGHT 24
-
-//extern struct Nave nave;
-//Bala balas[MAX_BALAS];
-
-//void atirar() {
-    //for (int i = 0; i < MAX_BALAS; i++) {
-        //if (!balas[i].ativo) {
-            //balas[i].x = nave.x + 2;
-            //balas[i].y = HEIGHT - 3;
-            //balas[i].ativo = 1;
-            //break;
-        //}
-    //}
-//}
-
-//void moverTiros() {
-    //for (int i = 0; i < MAX_BALAS; i++) {
-        //if (balas[i].ativo) {
-            //balas[i].y--;
-            //if (balas[i].y < 0) {
-                //balas[i].ativo = 0;
-            //}
-        //}
-    //}
-//}
-
+// bala.c
 #include "bala.h"
-#include <stdio.h>
 
-void print_bala() {
-    printf("Função bala chamada!\n");
+Bala balas[MAX_BALAS];  // Inicializa a lista de balas
+
+void inicializarBalas(Bala *balas, int maxBalas) {
+    for (int i = 0; i < maxBalas; i++) {
+        balas[i].ativa = 0;  // Marca todas as balas como inativas inicialmente
+    }
 }
 
+void dispararBala(Bala *balas, int maxBalas, int x, int y) {
+    for (int i = 0; i < maxBalas; i++) {
+        if (balas[i].ativa == 0) {  // Se a bala está inativa
+            balas[i].x = x;
+            balas[i].y = y - 1;  // A bala começa acima da nave
+            balas[i].ativa = 1;  // Marca a bala como ativa
+            break;
+        }
+    }
+}
+
+void atualizarBalas(Bala *balas, int maxBalas) {
+    for (int i = 0; i < maxBalas; i++) {
+        if (balas[i].ativa) {
+            balas[i].y--;  // Move a bala para cima
+            if (balas[i].y < 0) {
+                balas[i].ativa = 0;  // Marca a bala como inativa se sair da tela
+            }
+        }
+    }
+}

@@ -1,21 +1,16 @@
+// nave.h
 #ifndef NAVE_H
 #define NAVE_H
 
+#define NAVE_X_INICIAL 40
+#define NAVE_Y_INICIAL 20
+
 typedef struct {
-    int x, y;  // Posições x e y da nave
+    int x, y;   // Posições
 } Nave;
 
-extern Nave nave;  // Declara a variável nave como extern para ser usada em outros arquivos
-
-void desenharNave(int x, int y); // Função para desenhar a nave na tela
-void moverNave();                // Função para mover a nave
-void apagaNave(int x, int y);    // Função para apagar a nave
-void telainicial();              // Função para a tela inicial do jogo
-void desenharAsteroides();
-void QuedasDosAsteroides();
-
+void inicializarNave(Nave *nave);
+void moverNave(Nave *nave, int direcao);
+void desenharNave(const Nave *nave);
 
 #endif
-
-
-

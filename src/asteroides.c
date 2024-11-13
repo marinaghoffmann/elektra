@@ -1,58 +1,35 @@
 #include "asteroides.h"
-#include <stdlib.h>
 #include "screen.h"
+#include <stdlib.h>
 
-#define MAX_ASTEROIDES 10
+void inicializarAsteroides(Asteroide asteroides[], int maxAsteroides) {
+    for (int i = 0; i < maxAsteroides; i++) {
+        asteroides[i].ativo = 0;
+    }
+}
 
-struct Asteroide {
-    int x;
-    int y;
-};
-
-// Array de asteroides como variável global
-struct Asteroide asteroides[MAX_ASTEROIDES];
-
-void inicializarAsteroides() {
-    // Definir uma área segura para o nascimento dos asteroides, evitando as bordas laterais
-    for (int i = 0; i < MAX_ASTEROIDES; i++) {
-        // Gerar uma coordenada X aleatória que não colida com as bordas laterais (evitando as colunas 1 e WIDTH)
-        // Como o asteroide ocupa três caracteres (*0*), precisamos garantir que ele não ultrapasse a borda
-        asteroides[i].x = rand() % (MAXX - 2 - 2) + 2; // Limita a área de X para que o *0* não ultrapasse a borda lateral
-
-        // Gerar uma coordenada Y aleatória dentro do topo da tela, mas dentro da área visível
-        asteroides[i].y = rand() % (MAXY / 4) + 1; // Exemplo: aparecer na parte superior, mas não ultrapassar 1/4 da altura total
-
-        // Garantir que o asteróide não vá para a borda
-        if (asteroides[i].x <= 1) {
-            asteroides[i].x = 2; // Ajusta a posição mínima para evitar que o *0* ultrapasse a borda esquerda
-        }
-        if (asteroides[i].x >= MAXX - 2) {
-            asteroides[i].x = MAXX - 3; // Ajusta a posição máxima para evitar que o *0* ultrapasse a borda direita
+void atualizarAsteroides(Asteroide asteroides[], int maxAsteroides) {
+    for (int i = 0; i < maxAsteroides; i++) {
+        if (!asteroides[i].ativo && rand() % 20 == 0) {
+            asteroides[i].x = rand() % MAXX;
+            asteroides[i].y = 0;
+            asteroides[i].ativo = 1;
+        } else if (asteroides[i].ativo) {
+            asteroides[i].y++;
+            if (asteroides[i].y >= MAXY) {
+                asteroides[i].ativo = 0;
+            }
         }
     }
 }
 
-void desenharAsteroides() {
-    for (int i = 0; i < MAX_ASTEROIDES; i++) {
-        screenGotoxy(asteroides[i].x, asteroides[i].y);
-        printf("*0*");
-    }
-}
-
-void atualizarAsteroides() {
-    // Apaga a posição atual dos asteroides
-    for (int i = 0; i < MAX_ASTEROIDES; i++) {
-        screenGotoxy(asteroides[i].x, asteroides[i].y);
-        printf("   ");
-        
-        // Move o asteroide para baixo
-        asteroides[i].y += 1;
-
-        // Se o asteroide sair da tela, reposiciona no topo com nova posição horizontal
-        if (asteroides[i].y >= MAXY) {
-            asteroides[i].y = MINY;
-            asteroides[i].x = rand() % (MAXX - MINX) + MINX;
+void desenharAsteroides(const Asteroide asteroides[], int maxAsteroides) {
+    for (int i = 0; i < maxAsteroides; i++) {
+        if (asteroides[i].ativo) {
+            screenGotoxy(asteroides[i].x, asteroides[i].y);
+            screenSetColor(RED, DARKGRAY);
+            printf("*");
         }
     }
-    desenharAsteroides();  // redesenha os asteroides em suas novas posições
 }
+

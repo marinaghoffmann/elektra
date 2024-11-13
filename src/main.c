@@ -8,108 +8,92 @@
 #include "bala.h"
 #include "nave.h"
 
-// Função que exibe a tela inicial do jogo
-void telainicial() {
-    screenClear(); // Limpa a tela antes de exibir a tela inicial
+#define UPDATE_DELAY 50  // Ajuste para o timer em milissegundos
+#define MAX_ASTEROIDES 10  // Número máximo de asteroides no jogo
 
-    screenGotoxy(MINX + 25, MINY + 10);
-    screenSetColor(WHITE, BLACK);
-    printf("███████╗██╗░░░░░███████╗██╗░░██╗████████╗██████╗░░█████╗░\n");
-    screenGotoxy(MINX + 25, MINY + 11);
-    screenSetColor(WHITE, BLACK);
-    printf("██╔════╝██║░░░░░██╔════╝██║░██╔╝╚══██╔══╝██╔══██╗██╔══██╗\n");
+// Função principal do jogo
+// Função principal do jogo
+void jogo() {
+    Nave nave;  // Declara a nave
+    inicializarNave(&nave);  // Inicializa a nave
 
-    screenGotoxy(MINX + 25, MINY + 12);
-    screenSetColor(WHITE, BLACK);
-    printf("█████╗░░██║░░░░░█████╗░░█████═╝░░░░██║░░░██████╔╝███████║\n");
-    screenGotoxy(MINX + 25, MINY + 13);
-    screenSetColor(WHITE, BLACK);
-    printf("██╔══╝░░██║░░░░░██╔══╝░░██╔═██╗░░░░██║░░░██╔══██╗██╔══██║\n");
-    screenGotoxy(MINX + 25, MINY + 14);
-    screenSetColor(WHITE, BLACK);
-    printf("███████╗███████╗███████╗██║░╚██╗░░░██║░░░██║░░██║██║░░██║\n");
-    screenGotoxy(MINX + 25, MINY + 15);
-    screenSetColor(WHITE, BLACK);
-    printf("╚══════╝╚══════╝╚══════╝╚═╝░░╚═╝░░░╚═╝░░░╚═╝░░╚═╝╚═╝░░╚═╝\n");
+    int tickMovimento = 0;  // Contador para controlar a taxa de atualização
 
-    // Exibe mensagens com instruções para o jogador
-    screenGotoxy(MINX + 25, MINY + 18);
-    screenSetColor(LIGHTBLUE, DARKGRAY);
-    printf("Proteja o planeta da tempestade de asteroides!");
+    // Inicializa os asteroides
+    Asteroide asteroides[MAX_ASTEROIDES];
+    inicializarAsteroides(asteroides, MAX_ASTEROIDES);
 
-    screenGotoxy(MINX + 25, MINY + 19);
-    screenSetColor(LIGHTBLUE, DARKGRAY);
-    printf("Use as setas da direita e esquerda para mover a nave, e o espaço para atirar.");
+    // Inicializa as balas (um milhão de balas disponíveis)
+    inicializarBalas(balas, MAX_BALAS);  // Inicializa todas as balas como inativas
 
-    screenGotoxy(MINX + 25, MINY + 20);
-    screenSetColor(LIGHTBLUE, DARKGRAY);
-    printf("Pressione 'C' para começar ou 'S' para sair.\n");
+    // Inicia o timer com um delay configurável
+    timerInit(UPDATE_DELAY);
 
-    fflush(stdout); // Garante que a saída seja exibida imediatamente
-
-    // Espera até que o jogador pressione 'C' ou 'S'
+    // Loop principal do jogo
     while (1) {
-        if (keyhit()) { // Verifica se alguma tecla foi pressionada
-            char ch = readch();
-            if (ch == 'C' || ch == 'c') {
-                return; // Sai da tela inicial para começar o jogo
-            } else if (ch == 'S' || ch == 's') {
-                exit(0); // Sai do jogo
-            }
-        }
-    }
-}
-
-// Função que exibe a tela do jogo
-void telaJogo(int nave_x, int nave_y) {
-    screenClear(); // Limpa a tela antes de desenhar a tela do jogo
-
-    // Aqui você pode desenhar elementos do jogo, como a nave e asteroides
-    desenharNave(nave_x, nave_y);
-    desenharAsteroides();
-
-    // Atualiza a tela
-    screenUpdate();
-}
-
-#define WIDTH 130
-#define HEIGHT 40 
-
-int main() {
-    screenInit(1); // inicializa a tela
-    telainicial();
-
-    int nave_x = (WIDTH - 5) / 2;
-    int nave_y = HEIGHT - 4;
-
-    inicializarAsteroides(); // Inicializa asteroides
-
-    // Loop principal
-    while (1) {
-        // **1. Checar entrada do jogador**
+        // Verifica se a tecla foi pressionada
         if (keyhit()) {
-            char tecla = readch();
-            apagaNave(nave_x, nave_y); // apaga a nave da posição atual
-
-            // Movimenta nave com setas
-            if (tecla == 27 && getchar() == 91) {
-                tecla = getchar();
-                if (tecla == 67 && nave_x < WIDTH - 5) nave_x++;   // Direita
-                else if (tecla == 68 && nave_x > 0) nave_x--;      // Esquerda
+            char ch = readch();
+            if (ch == 'a') {
+                moverNave(&nave, -1);  // Move a nave para a esquerda
+            } else if (ch == 'd') {
+                moverNave(&nave, 1);  // Move a nave para a direita
+            } else if (ch == ' ') {
+                // Dispara uma nova bala
+                dispararBala(balas, MAX_BALAS, nave.x, nave.y);  // Dispara se houver uma bala inativa
             }
-            if (tecla == 's') break; // Sai do jogo se pressionar 's'
         }
 
-        // **2. Atualizar asteroides**
-        atualizarAsteroides();
+        // Atualização condicional para controlar a taxa de atualização
+        if (timerTimeOver()) {
+            screenClear();
 
-        // **3. Desenhar a tela do jogo**
-        telaJogo(nave_x, nave_y);
+            // Atualiza os asteroides e os desenha
+            atualizarAsteroides(asteroides, MAX_ASTEROIDES);
+            desenharAsteroides(asteroides, MAX_ASTEROIDES);
 
-        // **4. Controle de tempo**
-        usleep(100000); // Define o tempo de atualização do jogo
+            // Desenha a nave
+            desenharNave(&nave);
+
+            // Atualiza posição das balas e verifica colisão
+            atualizarBalas(balas, MAX_BALAS);  // Atualiza as balas (movendo-as para cima)
+
+            // Desenha as balas ativas
+            for (int i = 0; i < MAX_BALAS; i++) {
+                if (balas[i].ativa) {
+                    screenGotoxy(balas[i].x, balas[i].y);
+                    screenSetColor(RED, DARKGRAY);
+                    printf("|");
+                }
+            }
+
+            // Verifica colisão com os asteroides
+            for (int i = 0; i < MAX_BALAS; i++) {
+                if (balas[i].ativa) {
+                    for (int j = 0; j < MAX_ASTEROIDES; j++) {
+                        if (asteroides[j].ativo && balas[i].x == asteroides[j].x && balas[i].y == asteroides[j].y) {
+                            // Colidiu com um asteroide, destrói a bala e o asteroide
+                            asteroides[j].ativo = 0;  // Remove o asteroide
+                            balas[i].ativa = 0;  // Remove a bala
+                            break;  // Sai do loop de asteroides
+                        }
+                    }
+                }
+            }
+
+            fflush(stdout);  // Garante a atualização imediata da tela
+            tickMovimento++; // Incrementa o contador de tick
+        }
     }
+}
 
-    screenDestroy(); // Finaliza a tela
+
+// Função principal
+int main() {
+    // Inicialização de componentes do jogo
+    // Exemplo: screenInit(), keyboardInit(), etc.
+
+    jogo();  // Chama a função do jogo
+
     return 0;
 }
