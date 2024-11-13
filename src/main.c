@@ -236,6 +236,13 @@ void exibirTelaSaida() {
 }
 
 void jogo() {
+    int *pontuacao = malloc(sizeof(int));
+    if (!pontuacao) {
+        fprintf(stderr, "Erro ao alocar memória para a pontuação!\n");
+        exit(1);
+    }
+
+    *pontuacao = 0;
     Nave nave;  // Declara a nave
     inicializarNave(&nave);  // Inicializa a nave
 
@@ -270,6 +277,7 @@ void jogo() {
                 dispararBala(balas, MAX_BALAS, nave.x, nave.y);  // Dispara se houver uma bala inativa
             } else if (ch == 'S' || ch == 's') {
                 exibirTelaSaida();
+                free(pontuacao);
                 return;  // Retorna para o menu
             }
         }
