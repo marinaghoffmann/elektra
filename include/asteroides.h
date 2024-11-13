@@ -11,5 +11,6 @@ typedef struct {
 void inicializarAsteroides(Asteroide asteroides[], int maxAsteroides);
 void atualizarAsteroides(Asteroide asteroides[], int maxAsteroides);
 void desenharAsteroides(const Asteroide asteroides[], int maxAsteroides);
+void verificarColisaoAsteroide(Bala balas[], int maxBalas, Asteroide asteroides[], int maxAsteroides); 
 
 #endif
