@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <time.h>
 #include "screen.h"
 #include "keyboard.h"
 #include "timer.h"
@@ -13,42 +14,67 @@
 
 // Função principal do jogo
 
+void exibirEstrelas() {
+    int i, j;
+    for (i = 0; i < 20; i++) { // Número de linhas
+        for (j = 0; j < 80; j++) { // Largura da tela
+            if (rand() % 100 < 5) { // 5% de chance de colocar uma estrela
+                screenGotoxy(j, i);
+                screenSetColor(YELLOW, DARKGRAY);
+                printf("*");
+            }
+        }
+    }
+}
+
 void menu() {
     screenClear();
+    srand(time(NULL)); // Inicializa o gerador de números aleatórios
 
-    screenGotoxy(MINX + 5, MINY + 10);
-    screenSetColor(WHITE, DARKGRAY);
-    printf("███████╗██╗░░░░░███████╗██╗░░██╗████████╗██████╗░░█████╗░\n");
-    screenGotoxy(MINX + 5, MINY + 11);
-    screenSetColor(WHITE, DARKGRAY);
-    printf("██╔════╝██║░░░░░██╔════╝██║░██╔╝╚══██╔══╝██╔══██╗██╔══██╗\n");
-    screenGotoxy(MINX + 5, MINY + 12);
-    screenSetColor(WHITE, DARKGRAY);
-    printf("█████╗░░██║░░░░░█████╗░░█████═╝░░░░██║░░░██████╔╝███████║\n");
-    screenGotoxy(MINX + 5, MINY + 13);
-    screenSetColor(WHITE, DARKGRAY);
-    printf("██╔══╝░░██║░░░░░██╔══╝░░██╔═██╗░░░░██║░░░██╔══██╗██╔══██║\n");
-    screenGotoxy(MINX + 5, MINY + 14);
-    screenSetColor(WHITE, DARKGRAY);
-    printf("███████╗███████╗███████╗██║░╚██╗░░░██║░░░██║░░██║██║░░██║\n");
-    screenGotoxy(MINX + 5, MINY + 15);
-    screenSetColor(WHITE, DARKGRAY);
-    printf("╚══════╝╚══════╝╚══════╝╚═╝░░╚═╝░░░╚═╝░░░╚═╝░░╚═╝╚═╝░░╚═╝\n");
-    screenGotoxy(MINX + 5, MINY + 16);
+    // Animação do título caindo
+    for (int y = 0; y < 10; y++) { // 10 é o número de linhas que o título vai cair
+        screenClear(); // Limpa a tela a cada iteração
+        screenGotoxy(MINX + 5, MINY + 10 + y);
+        screenSetColor(WHITE, DARKGRAY);
+        printf("▓█████  ██▓    ▓█████  ██ ▄█▀▄▄▄█████▓ ██▀███   ▄▄▄      \n");
+        screenGotoxy(MINX + 5, MINY + 11 + y);
+        printf("▓█   ▀ ▓██▒    ▓█   ▀  ██▄█▒ ▓  ██▒ ▓▒▓██ ▒ ██▒▒████▄    \n");
+        screenGotoxy(MINX + 5, MINY + 12 + y);
+        printf("▒███   ▒██░    ▒███   ▓███▄░ ▒ ▓██░ ▒░▓██ ░▄█ ▒▒██  ▀█▄  \n");
+        screenGotoxy(MINX + 5, MINY + 13 + y);
+        printf("▒▓█  ▄ ▒██░    ▒▓█  ▄ ▓██ █▄ ░ ▓██▓ ░ ▒██▀▀█▄  ░██▄▄▄▄██ \n");
+        screenGotoxy(MINX + 5, MINY + 14 + y);
+        printf("░▒████▒░██████▒░▒████▒▒██▒ █▄  ▒██▒ ░ ░██▓ ▒██▒ ▓█   ▓██▒\n");
+        screenGotoxy(MINX + 5, MINY + 15 + y);
+        printf("░░ ▒░ ░░ ▒░▓  ░░░ ▒░ ░▒ ▒▒ ▓▒  ▒ ░░   ░ ▒▓ ░▒▓░ ▒▒   ▓▒█░\n");
+        screenGotoxy(MINX + 5, MINY + 16 + y);
+        printf(" ░ ░  ░░ ░ ▒  ░ ░ ░  ░░ ░▒ ▒░    ░      ░▒ ░ ▒░  ▒   ▒▒ ░\n");
+        screenGotoxy(MINX + 5, MINY + 17 + y);
+        printf("   ░     ░ ░      ░   ░ ░░ ░   ░        ░░   ░   ░   ▒   \n");
+        screenGotoxy(MINX + 5, MINY + 18 + y);
+        printf("   ░  ░    ░  ░   ░  ░░  ░               ░           ░  ░\n");
+
+        fflush(stdout);
+        usleep(200000); // Pausa de 200ms entre cada linha
+    }
+
+    // Exibe as instruções
+    screenGotoxy(MINX + 5, MINY + 30);
     screenSetColor(WHITE, DARKGRAY);
     printf("Proteja o planeta da tempestade de asteroides!");
-    screenGotoxy(MINX + 5, MINY + 17);
-    screenSetColor(WHITE, DARKGRAY);
+    screenGotoxy(MINX + 5, MINY + 31);
     printf("Pressione 'C' para começar ou 'S' para sair.");
-
-    screenGotoxy(MINX + 5, MINY + 21);
+    screenGotoxy(MINX + 5, MINY + 33);
     printf("Destrua os asteroides antes que eles atinjam a Terra.");
-    screenGotoxy(MINX + 5, MINY + 22);
+    screenGotoxy(MINX + 5, MINY + 34);
     printf("CUIDADO! Não seja atingido.");
-    screenGotoxy(MINX + 5, MINY + 23);
+    screenGotoxy(MINX + 5, MINY + 35);
     printf("Use as teclas de seta para mover a nave e espaço para atirar.");
-    screenGotoxy(MINX + 5, MINY + 24);
+    screenGotoxy(MINX + 5, MINY + 36);
     printf("Aperte 'C' para começar. Boa sorte!...");
+
+    // Exibe as estrelas no fundo
+    exibirEstrelas();  // Chama a função para exibir as estrelas no fundo
 
     fflush(stdout);
 
@@ -64,6 +90,7 @@ void menu() {
         }
     }
 }
+
 
 void jogo() {
     Nave nave;  // Declara a nave
@@ -125,7 +152,7 @@ void jogo() {
             for (int i = 0; i < MAX_BALAS; i++) {
                 if (balas[i].ativa) {
                     screenGotoxy(balas[i].x, balas[i].y);
-                    screenSetColor(RED, DARKGRAY);
+                    screenSetColor(YELLOW, DARKGRAY);
                     printf("|");
                 }
             }

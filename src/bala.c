@@ -32,7 +32,7 @@ void atualizarBalas(Bala *balas, int maxBalas) {
     }
 }
 
-void verificarColisaoComAsteroides(Bala *balas, int maxBalas, Asteroide *asteroides, int maxAsteroides, int distancia_colisao) {
+void verificarColisaoComAsteroides(Bala *balas, int maxBalas, Asteroide *asteroides, int maxAsteroides, int distancia_colisao) { //GNT< ESTUDAR ESSA FUNCAOO
     for (int i = 0; i < maxBalas; i++) {
         if (balas[i].ativa) {  // Verifica se a bala está ativa
             for (int j = 0; j < maxAsteroides; j++) {

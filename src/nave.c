@@ -16,7 +16,7 @@ void moverNave(Nave *nave, int direcao) {
 
 void desenharNave(const Nave *nave) {
     screenGotoxy(nave->x, nave->y);
-    screenSetColor(LIGHTBLUE, DARKGRAY);
+    screenSetColor(WHITE, DARKGRAY);
     printf("  ^  ");
     
     screenGotoxy(nave->x, nave->y + 1);

@@ -46,7 +46,7 @@ void desenharAsteroides(const Asteroide asteroides[], int maxAsteroides) {
     for (int i = 0; i < maxAsteroides; i++) {
         if (asteroides[i].ativo) {
             screenGotoxy(asteroides[i].x, asteroides[i].y);
-            screenSetColor(RED, DARKGRAY);
+            screenSetColor(BLUE, DARKGRAY);
             printf("*0*");
         }
     }
