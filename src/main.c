@@ -344,17 +344,42 @@ void gameOver() {
     }
 }
 
-void salvarPontuacao(int pontuacao) {
-    FILE *arquivo = fopen("pontuacoes.txt", "a");  
+void salvarPontuacao(int novaPontuacao) {
+    FILE *arquivo;
+    int pontuacoes[100];  // Supondo um limite máximo de 100 pontuações
+    int count = 0;
+
+    // Abre o arquivo para leitura
+    arquivo = fopen("pontuacoes.txt", "r");
+    if (arquivo != NULL) {
+        while (fscanf(arquivo, "%d", &pontuacoes[count]) == 1 && count < 100) {
+            count++;
+        }
+        fclose(arquivo);
+    }
+
+    // Insere a nova pontuação na lista de forma ordenada
+    int i;
+    for (i = count - 1; i >= 0 && pontuacoes[i] < novaPontuacao; i--) {
+        pontuacoes[i + 1] = pontuacoes[i];
+    }
+    pontuacoes[i + 1] = novaPontuacao;
+    count++;
+
+    // Abre o arquivo para escrita e salva as pontuações ordenadas
+    arquivo = fopen("pontuacoes.txt", "w");
     if (arquivo == NULL) {
-        printf("Erro ao abrir o arquivo de pontuações!\n");
+        printf("Erro ao abrir o arquivo para salvar a pontuação.\n");
         return;
     }
 
-    fprintf(arquivo, "%d\n", pontuacao);
+    for (int j = 0; j < count; j++) {
+        fprintf(arquivo, "%d\n", pontuacoes[j]);
+    }
 
     fclose(arquivo);
 }
+
 
 void exibirPontuacoes() {
     FILE *arquivo = fopen("pontuacoes.txt", "r");
