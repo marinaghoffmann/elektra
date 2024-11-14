@@ -78,8 +78,12 @@ void inicializarNave(Nave *nave) {
 void moverNave(Nave *nave, int direcao) {
     if (direcao == -1 && nave->x > 0) {
         nave->x--;  // Move para a esquerda
-    } else if (direcao == 1 && nave->x < MAXX - 1) {
+    } else if (direcao == 1 && nave->x < MAXX - 5) {
         nave->x++;  // Move para a direita
+    } else if (direcao == -2 && nave->y > 0) {
+        nave->y--;  // Move para cima
+    } else if (direcao == 2 && nave->y < MAXY - 3) {
+        nave->y++;  // Move para baixo
     }
 }
 
@@ -389,6 +393,8 @@ void jogo() {
                     ch = readch();
                     if (ch == 'D') moverNave(&nave, -1); // Esquerda
                     if (ch == 'C') moverNave(&nave, 1);  // Direita
+                    if (ch == 'A') moverNave(&nave, -2); // Cima
+                    if (ch == 'B') moverNave(&nave, 2);  // Baixo
                 }
             } else if (ch == ' ') {
                 dispararBala(balas, MAX_BALAS, nave.x, nave.y);
