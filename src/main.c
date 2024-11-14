@@ -300,6 +300,9 @@ void gameOver() {
     screenGotoxy(MAXX / 2 - 25, MAXY / 2 + 6);
     screenSetColor(WHITE, BLACK);
     printf("Tempo esgotado! Aperte 'C' para tentar novamente ou '1' para voltar ao menu.");
+    screenGotoxy(MAXX / 2 - 25, MAXY / 2 + 8);
+    screenSetColor(WHITE, BLACK);
+    printf("Pontuação final: %d", pontuacao);
 
     fflush(stdout);
 
