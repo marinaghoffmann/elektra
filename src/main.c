@@ -26,13 +26,48 @@ typedef struct {
 
 typedef struct {
     int x, y;
-    int ativo;
-} Asteroide;
-
-typedef struct {
-    int x, y;
     int ativa;
 } Bala;
+
+typedef struct Asteroide {
+    int x, y;
+    int ativo;
+    struct Asteroide *prox;  // Ponteiro para o próximo asteroide
+} Asteroide;
+
+Asteroide *inicializarAsteroides() {
+    Asteroide *lista = NULL;
+    return lista;
+}
+
+void adicionarAsteroide(Asteroide **lista, int x, int y) {
+    Asteroide *novo = malloc(sizeof(Asteroide));
+    if (novo == NULL) {
+        printf("Erro ao alocar memória para asteroide\n");
+        exit(1);
+    }
+    novo->x = x;
+    novo->y = y;
+    novo->ativo = 1;
+    novo->prox = *lista;
+    *lista = novo;  // Adiciona na cabeça da lista
+}
+
+void removerAsteroide(Asteroide **lista, Asteroide *asteroide) {
+    if (*lista == asteroide) {
+        *lista = asteroide->prox;
+    } else {
+        Asteroide *temp = *lista;
+        while (temp != NULL && temp->prox != asteroide) {
+            temp = temp->prox;
+        }
+        if (temp != NULL) {
+            temp->prox = asteroide->prox;
+        }
+    }
+    free(asteroide);
+}
+
 
 // Funções de manipulação da nave
 void inicializarNave(Nave *nave) {
@@ -58,13 +93,6 @@ void desenharNave(const Nave *nave) {
     
     screenGotoxy(nave->x, nave->y + 2);
     printf("|_o_|");
-}
-
-// Funções de manipulação dos asteroides
-void inicializarAsteroides(Asteroide asteroides[], int maxAsteroides) {
-    for (int i = 0; i < maxAsteroides; i++) {
-        asteroides[i].ativo = 0;
-    }
 }
 
 void atualizarAsteroides(Asteroide asteroides[], int maxAsteroides) {
