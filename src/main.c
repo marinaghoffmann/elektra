@@ -257,6 +257,7 @@ void menu() {
                 exit(0);  // Sai do jogo
             } else if (ch == 'V' || ch == 'v'){
                 exibirPontuacoes(); // Exibe as pontuações salvas
+                screenClear();
                 screenGotoxy(MAXX / 2 - 10, MAXY - 2);
             }
         }
@@ -344,58 +345,70 @@ void gameOver() {
     }
 }
 
-void salvarPontuacao(int novaPontuacao) {
-    FILE *arquivo;
-    int pontuacoes[100];  // Supondo um limite máximo de 100 pontuações
-    int count = 0;
-
-    // Abre o arquivo para leitura
-    arquivo = fopen("pontuacoes.txt", "r");
-    if (arquivo != NULL) {
-        while (fscanf(arquivo, "%d", &pontuacoes[count]) == 1 && count < 100) {
-            count++;
-        }
-        fclose(arquivo);
-    }
-
-    // Insere a nova pontuação na lista de forma ordenada
-    int i;
-    for (i = count - 1; i >= 0 && pontuacoes[i] < novaPontuacao; i--) {
-        pontuacoes[i + 1] = pontuacoes[i];
-    }
-    pontuacoes[i + 1] = novaPontuacao;
-    count++;
-
-    // Abre o arquivo para escrita e salva as pontuações ordenadas
-    arquivo = fopen("pontuacoes.txt", "w");
-    if (arquivo == NULL) {
-        printf("Erro ao abrir o arquivo para salvar a pontuação.\n");
+void salvarPontuacao(int pontuacao) {
+    FILE *file = fopen("pontuacoes.txt", "a");
+    if (file == NULL) {
+        printf("Erro ao abrir o arquivo para salvar pontuação.\n");
         return;
     }
-
-    for (int j = 0; j < count; j++) {
-        fprintf(arquivo, "%d\n", pontuacoes[j]);
-    }
-
-    fclose(arquivo);
+    fprintf(file, "%d\n", pontuacao);  // Adiciona a pontuação ao final do arquivo
+    fclose(file);
 }
 
 
 void exibirPontuacoes() {
-    FILE *arquivo = fopen("pontuacoes.txt", "r");
-    if (arquivo == NULL) {
-        printf("Nenhuma pontuação salva!\n");
+    FILE *file = fopen("pontuacoes.txt", "r");
+    if (file == NULL) {
+        printf("Erro ao abrir o arquivo de pontuações.\n");
         return;
     }
 
-    printf("\nPontuações Salvas:\n");
+    int pontuacoes[100];  // Máximo de 100 pontuações
+    int count = 0;
 
-    int pontuacao;
-    while (fscanf(arquivo, "%d", &pontuacao) != EOF) {
-        printf("%d\n", pontuacao);
+    // Lê as pontuações do arquivo
+    while (fscanf(file, "%d", &pontuacoes[count]) == 1) {
+        count++;
+    }
+    fclose(file);
+
+    // Ordena as pontuações em ordem decrescente
+    for (int i = 0; i < count - 1; i++) {
+        for (int j = i + 1; j < count; j++) {
+            if (pontuacoes[i] < pontuacoes[j]) {
+                int temp = pontuacoes[i];
+                pontuacoes[i] = pontuacoes[j];
+                pontuacoes[j] = temp;
+            }
+        }
     }
 
-    fclose(arquivo);
+    // Exibe as pontuações na tela
+    screenClear();
+    screenGotoxy(MAXX / 2 - 10, MINY + 5);
+    printf("Ranking de Pontuações:");
+    for (int i = 0; i < count && i < 10; i++) {  // Exibe as 10 melhores pontuações
+        screenGotoxy(MAXX / 2 - 10, MINY + 7 + i);
+        printf("%dº Lugar: %d pontos", i + 1, pontuacoes[i]);
+    }
+
+    screenGotoxy(MAXX / 2 - 10, MAXY - 2);
+    printf("Pressione 1 para voltar ao menu.");
+
+    fflush(stdout);
+    screenGotoxy(MAXX / 2 - 15, MAXY - 2);
+    screenSetColor(RED, DARKGRAY);
+    printf("Pressione 1 para voltar ao menu principal.");
+
+    fflush(stdout);
+
+    // Espera que o jogador pressione "1" para retornar ao menu
+    while (1) {
+        if (keyhit() && readch() == '1') {
+            menu(); // Chama a função de menu para retornar
+            return;
+        }
+    }
 }
 
 void jogo() {
