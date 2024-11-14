@@ -18,10 +18,6 @@
 // Variável global para pontuação
 int pontuacao = 0;  
 
-void exibirPontuacoes();
-void salvarPontuacao(int pontuacao);
-void jogo();
-
 typedef struct {
     int x, y;
 } Nave;
@@ -37,9 +33,24 @@ typedef struct Asteroide {
     struct Asteroide *prox;  // Ponteiro para o próximo asteroide
 } Asteroide;
 
-Asteroide *inicializarAsteroides() {
+void exibirPontuacoes();
+void salvarPontuacao(int pontuacao);
+void jogo();
+void inicializarAsteroides(Asteroide asteroides[], int tamanho);
+
+
+Asteroide *listaAsteroides() {
     Asteroide *lista = NULL;
     return lista;
+}
+
+void inicializarAsteroides(Asteroide asteroides[], int tamanho) {
+    for (int i = 0; i < tamanho; i++) {
+        asteroides[i].x = 0;
+        asteroides[i].y = 0;
+        asteroides[i].ativo = 1;  // Exemplo: inicializar como ativo
+        asteroides[i].prox = NULL;
+    }
 }
 
 void adicionarAsteroide(Asteroide **lista, int x, int y) {
