@@ -13,6 +13,8 @@
 #define NAVE_Y_INICIAL 20
 #define DURACAO_JOGO 60  
 
+//teste para identificar o erro que ta tendo
+
 // Variável global para pontuação
 int pontuacao = 0;  
 
