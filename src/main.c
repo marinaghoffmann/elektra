@@ -419,7 +419,6 @@ void jogo() {
             desenharNave(&nave);
 
             exibirPontuacao();
-
             exibirTempoRestante(tempoRestante);
 
             // Desenha as balas ativas
