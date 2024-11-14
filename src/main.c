@@ -252,6 +252,7 @@ void menu() {
         if (keyhit()) {
             char ch = readch();
             if (ch == 'C' || ch == 'c') {
+                jogo();
                 return; 
             } else if (ch == 'S' || ch == 's') {
                 exit(0);  // Sai do jogo
