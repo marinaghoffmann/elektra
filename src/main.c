@@ -100,19 +100,26 @@ void desenharNave(const Nave *nave) {
 }
 
 void atualizarAsteroides(Asteroide asteroides[], int maxAsteroides) {
-    for (int i = 0; i < maxAsteroides; i++) {
-        if (!asteroides[i].ativo && rand() % 20 == 0) {
-            asteroides[i].x = rand() % MAXX;
-            asteroides[i].y = 0;
-            asteroides[i].ativo = 1;
-        } else if (asteroides[i].ativo) {
-            asteroides[i].y++;
-            if (asteroides[i].y >= MAXY) {
-                asteroides[i].ativo = 0;
+    int contadorAsteroides = 0;  // Contador que vai controlar a velocidade
+
+    // Verifica se já passou o intervalo necessário para mover os asteroides
+    if (contadorAsteroides % 2 == 0) {  // A cada 2 atualizações, move os asteroides
+        for (int i = 0; i < maxAsteroides; i++) {
+            if (!asteroides[i].ativo && rand() % 20 == 0) {
+                asteroides[i].x = rand() % MAXX;
+                asteroides[i].y = 0;
+                asteroides[i].ativo = 1;
+            } else if (asteroides[i].ativo) {
+                asteroides[i].y++;
+                if (asteroides[i].y >= MAXY) {
+                    asteroides[i].ativo = 0;
+                }
             }
         }
     }
+    contadorAsteroides++;
 }
+
 
 void desenharAsteroides(const Asteroide asteroides[], int maxAsteroides) {
     for (int i = 0; i < maxAsteroides; i++) {
