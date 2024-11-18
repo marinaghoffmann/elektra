@@ -247,17 +247,18 @@ void menu() {
 
     fflush(stdout);
 
-    // Espera pela entrada do usuário
     while (1) {
         if (keyhit()) {
             char ch = readch();
             if (ch == 'C' || ch == 'c') {
+                salvarPontuacao(pontuacao); 
+                pontuacao = 0; 
                 jogo();
                 return; 
             } else if (ch == 'S' || ch == 's') {
-                exit(0);  // Sai do jogo
+                exit(0); 
             } else if (ch == 'V' || ch == 'v'){
-                exibirPontuacoes(); // Exibe as pontuações salvas
+                exibirPontuacoes(); 
                 screenClear();
                 screenGotoxy(MAXX / 2 - 10, MAXY - 2);
             }
@@ -339,6 +340,7 @@ void gameOver() {
                 menu(); 
                 return; 
             } else if (ch == 'C' || ch == 'c') {
+                pontuacao = 0;
                 jogo(); 
                 return; 
             }
