@@ -6,16 +6,13 @@
 #include "keyboard.h"
 #include "timer.h"
 
-#define UPDATE_DELAY 50  // Ajuste para o timer em milissegundos
-#define MAX_ASTEROIDES 10  // Número máximo de asteroides no jogo
-#define MAX_BALAS 5        // Número máximo de balas simultâneas
-#define NAVE_X_INICIAL 40  // Posição inicial da nave
+#define UPDATE_DELAY 50  
+#define MAX_ASTEROIDES 10  
+#define MAX_BALAS 5        
+#define NAVE_X_INICIAL 40  
 #define NAVE_Y_INICIAL 20
 #define DURACAO_JOGO 60  
 
-//teste para identificar o erro que ta tendo
-
-// Variável global para pontuação
 int pontuacao = 0;  
 
 typedef struct {
@@ -30,7 +27,7 @@ typedef struct {
 typedef struct Asteroide {
     int x, y;
     int ativo;
-    struct Asteroide *prox;  // Ponteiro para o próximo asteroide
+    struct Asteroide *prox;  
 } Asteroide;
 
 void exibirPontuacoes();
@@ -48,7 +45,7 @@ void inicializarAsteroides(Asteroide asteroides[], int tamanho) {
     for (int i = 0; i < tamanho; i++) {
         asteroides[i].x = 0;
         asteroides[i].y = 0;
-        asteroides[i].ativo = 1;  // Exemplo: inicializar como ativo
+        asteroides[i].ativo = 1;  
         asteroides[i].prox = NULL;
     }
 }
@@ -63,7 +60,7 @@ void adicionarAsteroide(Asteroide **lista, int x, int y) {
     novo->y = y;
     novo->ativo = 1;
     novo->prox = *lista;
-    *lista = novo;  // Adiciona na cabeça da lista
+    *lista = novo;  
 }
 
 void removerAsteroide(Asteroide **lista, Asteroide *asteroide) {
@@ -82,7 +79,6 @@ void removerAsteroide(Asteroide **lista, Asteroide *asteroide) {
 }
 
 
-// Funções de manipulação da nave
 void inicializarNave(Nave *nave) {
     nave->x = NAVE_X_INICIAL;
     nave->y = NAVE_Y_INICIAL;
@@ -90,13 +86,13 @@ void inicializarNave(Nave *nave) {
 
 void moverNave(Nave *nave, int direcao) {
     if (direcao == -1 && nave->x > 0) {
-        nave->x--;  // Move para a esquerda
+        nave->x--;  
     } else if (direcao == 1 && nave->x < MAXX - 5) {
-        nave->x++;  // Move para a direita
+        nave->x++;  
     } else if (direcao == -2 && nave->y > 0) {
-        nave->y--;  // Move para cima
+        nave->y--; 
     } else if (direcao == 2 && nave->y < MAXY - 3) {
-        nave->y++;  // Move para baixo
+        nave->y++; 
     }
 }
 
@@ -113,10 +109,9 @@ void desenharNave(const Nave *nave) {
 }
 
 void atualizarAsteroides(Asteroide asteroides[], int maxAsteroides) {
-    int contadorAsteroides = 0;  // Contador que vai controlar a velocidade
+    int contadorAsteroides = 0; 
 
-    // Verifica se já passou o intervalo necessário para mover os asteroides
-    if (contadorAsteroides % 2 == 0) {  // A cada 2 atualizações, move os asteroides
+    if (contadorAsteroides % 2 == 0) { 
         for (int i = 0; i < maxAsteroides; i++) {
             if (!asteroides[i].ativo && rand() % 20 == 0) {
                 asteroides[i].x = rand() % MAXX;
@@ -144,7 +139,6 @@ void desenharAsteroides(const Asteroide asteroides[], int maxAsteroides) {
     }
 }
 
-// Funções de manipulação das balas
 void inicializarBalas(Bala *balas, int maxBalas) {
     for (int i = 0; i < maxBalas; i++) {
         balas[i].ativa = 0;
@@ -180,7 +174,7 @@ void verificarColisaoComAsteroides(Bala balas[], int maxBalas, Asteroide asteroi
                 if (asteroides[j].ativo && abs(balas[i].x - asteroides[j].x) <= distanciaColisao && abs(balas[i].y - asteroides[j].y) <= distanciaColisao) {
                     balas[i].ativa = 0;
                     asteroides[j].ativo = 0;
-                    pontuacao++;  // Incrementa a pontuação
+                    pontuacao++;  
                 }
             }
         }
@@ -189,9 +183,9 @@ void verificarColisaoComAsteroides(Bala balas[], int maxBalas, Asteroide asteroi
 
 void exibirEstrelas() {
     int i, j;
-    for (i = 0; i < 20; i++) { // Número de linhas
-        for (j = 0; j < 80; j++) { // Largura da tela
-            if (rand() % 100 < 5) { // 5% de chance de colocar uma estrela
+    for (i = 0; i < 20; i++) {
+        for (j = 0; j < 80; j++) { 
+            if (rand() % 100 < 5) { 
                 screenGotoxy(j, i);
                 screenSetColor(YELLOW, DARKGRAY);
                 printf("*");
@@ -202,11 +196,10 @@ void exibirEstrelas() {
 
 void menu() {
     screenClear();
-    srand(time(NULL)); // Inicializa o gerador de números aleatórios
+    srand(time(NULL)); 
 
-    // Animação do título caindo
-    for (int y = 0; y < 10; y++) { // 10 é o número de linhas que o título vai cair
-        screenClear(); // Limpa a tela a cada iteração
+    for (int y = 0; y < 10; y++) { 
+        screenClear(); 
         screenGotoxy(MINX + 5, MINY + 10 + y);
         screenSetColor(WHITE, DARKGRAY);
         printf("▓█████  ██▓    ▓█████  ██ ▄█▀▄▄▄█████▓ ██▀███   ▄▄▄      \n");
@@ -228,10 +221,9 @@ void menu() {
         printf("   ░  ░    ░  ░   ░  ░░  ░               ░           ░  ░\n");
 
         fflush(stdout);
-        usleep(200000); // Pausa de 200ms entre cada linha
+        usleep(200000); 
     }
 
-    // Exibe as instruções
     screenGotoxy(MINX + 5, MINY + 30);
     screenSetColor(WHITE, DARKGRAY);
     printf("Proteja o planeta da tempestade de asteroides!");
@@ -242,8 +234,7 @@ void menu() {
     screenGotoxy(MINX + 5, MINY + 33);
     printf("Pressione 'C' para começar ou 'S' para sair e 'V' para ver pontuações anteriores.");
 
-    // Exibe as estrelas no fundo
-    exibirEstrelas();  // Chama a função para exibir as estrelas no fundo
+    exibirEstrelas(); 
 
     fflush(stdout);
 
@@ -267,13 +258,13 @@ void menu() {
 }
 
 void exibirPontuacao() {
-    screenGotoxy(MAXX / 2 - 15, 0);  // Posiciona mais à esquerda, para evitar sobreposição com o tempo
+    screenGotoxy(MAXX / 2 - 15, 0); 
     screenSetColor(WHITE, DARKGRAY);
     printf("Pontuação: %d", pontuacao);
 }
 
 void exibirTempoRestante(int tempoRestante) {
-    screenGotoxy(MAXX / 2 + 5, 0);  // Posiciona mais à direita, para evitar sobreposição com a pontuação
+    screenGotoxy(MAXX / 2 + 5, 0);  
     screenSetColor(WHITE, DARKGRAY);
     printf("Tempo restante: %02d:%02d", tempoRestante / 60, tempoRestante % 60);
 }
@@ -290,21 +281,20 @@ void exibirTelaSaida() {
     screenGotoxy(MAXX / 2 - 10, MAXY / 2 + 3);
     printf("Aperte 1 para voltar à tela inicial.");
 
-    fflush(stdout); // Garante que a tela seja atualizada sem `screenRefresh`
+    fflush(stdout); 
 
-    // Aguarda o jogador pressionar '1' para voltar à tela inicial
     while (1) {
         if (keyhit() && readch() == '1') {
-            menu(); // Chama a função que exibe a tela inicial
-            return; // Sai da função para retornar à tela inicial
+            menu(); 
+            return; 
         }
     }
 }
 
 void gameOver() {
     salvarPontuacao(pontuacao);
-    for (int y = 0; y < 10; y++) { // 10 é o número de linhas que a mensagem vai cair
-        screenClear(); // Limpa a tela a cada iteração
+    for (int y = 0; y < 10; y++) { 
+        screenClear(); 
         screenGotoxy(MINX + 5, MINY + 10 + y);
         screenSetColor(RED, BLACK);
         printf("████████╗██╗███╗   ███╗███████╗     ██████╗ ██╗   ██╗████████╗\n");
@@ -320,10 +310,9 @@ void gameOver() {
         printf("   ╚═╝   ╚═╝╚═╝     ╚═╝╚══════╝     ╚═════╝  ╚═════╝    ╚═╝   \n");
 
         fflush(stdout);
-        usleep(200000); // Pausa de 200ms entre cada linha
+        usleep(200000); 
     }
 
-    // Exibe a pontuação final e instruções após a animação
     screenGotoxy(MAXX / 2 - 25, MAXY / 2 + 6);
     screenSetColor(WHITE, BLACK);
     printf("Tempo esgotado! Aperte 'C' para tentar novamente ou '1' para voltar ao menu.");
@@ -354,7 +343,7 @@ void salvarPontuacao(int pontuacao) {
         printf("Erro ao abrir o arquivo para salvar pontuação.\n");
         return;
     }
-    fprintf(file, "%d\n", pontuacao);  // Adiciona a pontuação ao final do arquivo
+    fprintf(file, "%d\n", pontuacao); 
     fclose(file);
 }
 
@@ -366,16 +355,14 @@ void exibirPontuacoes() {
         return;
     }
 
-    int pontuacoes[100];  // Máximo de 100 pontuações
+    int pontuacoes[100]; 
     int count = 0;
 
-    // Lê as pontuações do arquivo
     while (fscanf(file, "%d", &pontuacoes[count]) == 1) {
         count++;
     }
     fclose(file);
 
-    // Ordena as pontuações em ordem decrescente
     for (int i = 0; i < count - 1; i++) {
         for (int j = i + 1; j < count; j++) {
             if (pontuacoes[i] < pontuacoes[j]) {
@@ -386,11 +373,10 @@ void exibirPontuacoes() {
         }
     }
 
-    // Exibe as pontuações na tela
     screenClear();
     screenGotoxy(MAXX / 2 - 10, MINY + 5);
     printf("Ranking de Pontuações:");
-    for (int i = 0; i < count && i < 10; i++) {  // Exibe as 10 melhores pontuações
+    for (int i = 0; i < count && i < 10; i++) {  
         screenGotoxy(MAXX / 2 - 10, MINY + 7 + i);
         printf("%dº Lugar: %d pontos", i + 1, pontuacoes[i]);
     }
@@ -405,17 +391,16 @@ void exibirPontuacoes() {
 
     fflush(stdout);
 
-    // Espera que o jogador pressione "1" para retornar ao menu
     while (1) {
         if (keyhit() && readch() == '1') {
-            menu(); // Chama a função de menu para retornar
+            menu(); 
             return;
         }
     }
 }
 
 void jogo() {
-    int tempoRestante = DURACAO_JOGO;  // Inicializa o tempo restante
+    int tempoRestante = DURACAO_JOGO;  
     clock_t inicio = clock();       
     int *pontuacao = malloc(sizeof(int));
     if (!pontuacao) {
@@ -424,38 +409,33 @@ void jogo() {
     }
 
     *pontuacao = 0;
-    Nave nave;  // Declara a nave
-    inicializarNave(&nave);  // Inicializa a nave
+    Nave nave;  
+    inicializarNave(&nave);  
 
-    // Inicializa os asteroides
     Asteroide asteroides[MAX_ASTEROIDES];
     inicializarAsteroides(asteroides, MAX_ASTEROIDES);
 
-    // Inicializa as balas
     Bala balas[MAX_BALAS];
-    inicializarBalas(balas, MAX_BALAS);  // Inicializa todas as balas como inativas
+    inicializarBalas(balas, MAX_BALAS);  
 
-    // Inicia o timer com um delay configurável
     timerInit(UPDATE_DELAY);
 
     while (tempoRestante > 0) {
-        // Verifica se o tempo passou 1 segundo
         if (((clock() - inicio) / CLOCKS_PER_SEC) >= 1) {
-            tempoRestante--;          // Reduz o tempo restante
-            inicio = clock();         // Reinicia o tempo base
+            tempoRestante--;          
+            inicio = clock();         
         }
 
-        // Verifica teclas pressionadas
         if (keyhit()) {
             char ch = readch();
             if (ch == 27) {
                 ch = readch();
                 if (ch == '[') {
                     ch = readch();
-                    if (ch == 'D') moverNave(&nave, -1); // Esquerda
-                    if (ch == 'C') moverNave(&nave, 1);  // Direita
-                    if (ch == 'A') moverNave(&nave, -2); // Cima
-                    if (ch == 'B') moverNave(&nave, 2);  // Baixo
+                    if (ch == 'D') moverNave(&nave, -1); 
+                    if (ch == 'C') moverNave(&nave, 1); 
+                    if (ch == 'A') moverNave(&nave, -2);
+                    if (ch == 'B') moverNave(&nave, 2); 
                 }
             } else if (ch == ' ') {
                 dispararBala(balas, MAX_BALAS, nave.x, nave.y);
@@ -465,24 +445,20 @@ void jogo() {
             }
         }
 
-        // Atualização condicional para controlar a taxa de atualização
         if (timerTimeOver()) {
             screenClear();
 
-            // Atualiza os asteroides e os desenha
             atualizarAsteroides(asteroides, MAX_ASTEROIDES);
             desenharAsteroides(asteroides, MAX_ASTEROIDES);
 
-            // Atualiza posição das balas e verifica colisão
-            atualizarBalas(balas, MAX_BALAS);  // Atualiza as balas (movendo-as para cima)
-            verificarColisaoComAsteroides(balas, MAX_BALAS, asteroides, MAX_ASTEROIDES, 2);  // Verifica colisões
+            atualizarBalas(balas, MAX_BALAS);  
+            verificarColisaoComAsteroides(balas, MAX_BALAS, asteroides, MAX_ASTEROIDES, 2);  
 
             desenharNave(&nave);
 
             exibirPontuacao();
             exibirTempoRestante(tempoRestante);
 
-            // Desenha as balas ativas
             for (int i = 0; i < MAX_BALAS; i++) {
                 if (balas[i].ativa) {
                     screenGotoxy(balas[i].x, balas[i].y);
@@ -491,7 +467,7 @@ void jogo() {
                 }
             }
 
-            fflush(stdout);  // Garante a atualização imediata da tela
+            fflush(stdout);  
         }
     }
     free(pontuacao);
@@ -500,7 +476,7 @@ void jogo() {
 
 int main() {
     menu();
-    srand(time(NULL));  // Inicializa o gerador de números aleatórios
-    jogo();  // Chama a função do jogo
+    srand(time(NULL));  
+    jogo(); 
     return 0;
 }
