@@ -32,11 +32,11 @@ make run
     mhg@cesar.school 📩
   </li>
   <li>
-    <a href="https://github.com/juliamariateixeiraa">Amanda Montarroios </a> -
+    <a href="https://github.com/amanda-montarroios">Amanda Montarroios </a> -
     amo@cesar.school 📩
   </li>
   <li>
-    <a href="https://github.com/lavasilva">Irvin Amilcar </a> -
-    @cesar.school 📩
+    <a href="https://github.com/IrvinAmilcar">Irvin Amilcar </a> -
+    iafbs@cesar.school 📩
   </li>
 </ul>
