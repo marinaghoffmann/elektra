@@ -1,10 +1,11 @@
 ![image](https://github.com/user-attachments/assets/b847dacc-8ee1-4d73-904a-b1c29d8c3f8e)
-# Elektra
+# Elektra: a luta no espaço.
+## Proteja o planeta da chuva de asteróides! 
 
 ## 🕹️ Como Jogar
 Use as quatro setas para mover a nave, e use a tecla "espaço" para atirar. 
 Atire no máximo de asteróides que você conseguir, em um minuto. 
-Jogue mais vezes e talvez sua pontuação apareça no ranking top 10.
+Jogue mais vezes, aumente sua pontuação e tente aparecer no ranking top 10.
 
 ## ⚙️ Como rodar:
 
