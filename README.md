@@ -1,4 +1,4 @@
-# elektra
+# Elektra
 
 # ⚙️ Como rodar:
 
