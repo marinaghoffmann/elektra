@@ -13,6 +13,11 @@
 #define NAVE_Y_INICIAL 20
 #define DURACAO_JOGO 60  
 
+<<<<<<< HEAD
+=======
+
+// Variável global
+>>>>>>> bc2e75900315801c8fab8441dd42cde89a679086
 int pontuacao = 0;  
 
 typedef struct {
@@ -174,7 +179,11 @@ void verificarColisaoComAsteroides(Bala balas[], int maxBalas, Asteroide asteroi
                 if (asteroides[j].ativo && abs(balas[i].x - asteroides[j].x) <= distanciaColisao && abs(balas[i].y - asteroides[j].y) <= distanciaColisao) {
                     balas[i].ativa = 0;
                     asteroides[j].ativo = 0;
+<<<<<<< HEAD
                     pontuacao++;  
+=======
+                    pontuacao++; 
+>>>>>>> bc2e75900315801c8fab8441dd42cde89a679086
                 }
             }
         }
@@ -198,8 +207,13 @@ void menu() {
     screenClear();
     srand(time(NULL)); 
 
+<<<<<<< HEAD
     for (int y = 0; y < 10; y++) { 
         screenClear(); 
+=======
+    for (int y = 0; y < 10; y++) { // 10 é o número de linhas que o título vai cair
+        screenClear(); // Limpa a tela a cada iteração
+>>>>>>> bc2e75900315801c8fab8441dd42cde89a679086
         screenGotoxy(MINX + 5, MINY + 10 + y);
         screenSetColor(WHITE, DARKGRAY);
         printf("▓█████  ██▓    ▓█████  ██ ▄█▀▄▄▄█████▓ ██▀███   ▄▄▄      \n");
@@ -476,7 +490,11 @@ void jogo() {
 
 int main() {
     menu();
+<<<<<<< HEAD
     srand(time(NULL));  
+=======
+    srand(time(NULL));  // Inicializa o gerador de números aleatórios
+>>>>>>> bc2e75900315801c8fab8441dd42cde89a679086
     jogo(); 
     return 0;
 }
