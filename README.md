@@ -5,7 +5,7 @@ Use as quatro setas para mover a nave, e use a tecla "espaço" para atirar.
 Atire no máximo de asteróides que você conseguir, em um minuto. 
 Jogue mais vezes e talvez sua pontuação apareça no ranking top 10.
 
-# ⚙️ Como rodar:
+## ⚙️ Como rodar:
 
 1º)  Clone o repositório
 ```
