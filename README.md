@@ -1,3 +1,4 @@
+![image](https://github.com/user-attachments/assets/b847dacc-8ee1-4d73-904a-b1c29d8c3f8e)
 # Elektra
 
 ## 🕹️ Como Jogar
