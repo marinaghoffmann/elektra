@@ -23,3 +23,20 @@ make run
 ```
 ---
 <br>
+
+## 👩‍💻 Membros & Perfis do GitHub
+
+<ul>
+  <li>
+    <a href="https://github.com/marinaghoffmann">Marina Hoffmann </a> -
+    mhg@cesar.school 📩
+  </li>
+  <li>
+    <a href="https://github.com/juliamariateixeiraa">Amanda Montarroios </a> -
+    amo@cesar.school 📩
+  </li>
+  <li>
+    <a href="https://github.com/lavasilva">Irvin Amilcar </a> -
+    @cesar.school 📩
+  </li>
+</ul>
